@@ -280,5 +280,47 @@
     "timeComplexity": "O(1) average for get and put",
     "spaceComplexity": "O(capacity)",
     "exampleWalkthrough": "capacity = 2\n\nput(1,1): cache = {1=1}\nput(2,2): cache = {1=1, 2=2}\nget(1): returns 1, cache = {2=2, 1=1} (1 moved to end)\nput(3,3): cache full, evict LRU (2), cache = {1=1, 3=3}\nget(2): returns -1 (evicted)\nput(4,4): cache full, evict LRU (1), cache = {3=3, 4=4}\nget(1): returns -1 (evicted)\nget(3): returns 3, cache = {4=4, 3=3}\nget(4): returns 4, cache = {3=3, 4=4}"
+  },
+  {
+    "id": "lru-cache-manual",
+    "name": "LRU Cache (Manual Implementation)",
+    "number": 146,
+    "difficulty": "Medium",
+    "description": "Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.\n\nImplement without using LinkedHashMap — use a custom doubly-linked list and HashMap from scratch.\n\n- LRUCache(int capacity) Initialize the LRU cache with positive size capacity.\n- int get(int key) Return the value of the key if the key exists, otherwise return -1.\n- void put(int key, int value) Update the value of the key if the key exists. Otherwise, add the key-value pair to the cache. If the number of keys exceeds the capacity from this operation, evict the least recently used key.\n\nThe functions get and put must each run in O(1) average time complexity.",
+    "examples": [
+      "Input: [\"LRUCache\", \"put\", \"put\", \"get\", \"put\", \"get\", \"put\", \"get\", \"get\", \"get\"]\n[[2], [1,1], [2,2], [1], [3,3], [2], [4,4], [1], [3], [4]]\nOutput: [null, null, null, 1, null, -1, null, -1, 3, 4]"
+    ],
+    "constraints": [
+      "1 <= capacity <= 3000",
+      "0 <= key <= 10^4",
+      "0 <= value <= 10^5",
+      "At most 2 * 10^5 calls will be made to get and put"
+    ],
+    "solutionCode": "class LRUCache {\n    private int capacity;\n    private Map<Integer, Node> map;\n    private Node head, tail;\n\n    class Node {\n        int key, value;\n        Node prev, next;\n        Node(int key, int value) {\n            this.key = key;\n            this.value = value;\n        }\n    }\n\n    public LRUCache(int capacity) {\n        this.capacity = capacity;\n        this.map = new HashMap<>();\n        head = new Node(0, 0);\n        tail = new Node(0, 0);\n        head.next = tail;\n        tail.prev = head;\n    }\n\n    public int get(int key) {\n        if (!map.containsKey(key)) return -1;\n        Node node = map.get(key);\n        remove(node);\n        addTail(node);\n        return node.value;\n    }\n\n    public void put(int key, int value) {\n        if (map.containsKey(key)) {\n            remove(map.get(key));\n        }\n        Node node = new Node(key, value);\n        map.put(key, node);\n        addTail(node);\n        if (map.size() > capacity) {\n            Node lru = head.next;\n            remove(lru);\n            map.remove(lru.key);\n        }\n    }\n\n    private void remove(Node node) {\n        node.prev.next = node.next;\n        node.next.prev = node.prev;\n    }\n\n    private void addTail(Node node) {\n        node.prev = tail.prev;\n        node.next = tail;\n        tail.prev.next = node;\n        tail.prev = node;\n    }\n}",
+    "explanation": "Doubly-linked list + HashMap. The list maintains order: head = least recently used, tail = most recently used.\n\nHashMap maps key → node for O(1) lookup. On get/put, move the node to the tail (most recent). On eviction, remove from head (least recent).\n\nDummy head and tail nodes eliminate edge cases for empty list operations.",
+    "timeComplexity": "O(1) average for get and put",
+    "spaceComplexity": "O(capacity)",
+    "exampleWalkthrough": "capacity = 2. List: head <-> tail, map: {}\n\nput(1,1): add node(1,1) to tail. List: head <-> (1) <-> tail. map: {1→(1)}\nput(2,2): add node(2,2) to tail. List: head <-> (1) <-> (2) <-> tail. map: {1→(1), 2→(2)}\nget(1): found! move (1) to tail. List: head <-> (2) <-> (1) <-> tail. return 1\nput(3,3): add (3) to tail. size=3 > capacity → remove head.next=(2). map: {1→(1), 3→(3)}\n  List: head <-> (1) <-> (3) <-> tail\nget(2): not in map → return -1\nput(4,4): add (4) to tail. evict (1). map: {3→(3), 4→(4)}\n  List: head <-> (3) <-> (4) <-> tail\nget(1): not in map → return -1\nget(3): found, move to tail. return 3\nget(4): found, move to tail. return 4"
+  },
+  {
+    "id": "lfu-cache",
+    "name": "LFU Cache",
+    "number": 460,
+    "difficulty": "Hard",
+    "description": "Design a data structure that follows the constraints of a Least Frequently Used (LFU) cache.\n\nImplement the LFUCache class:\n- LFUCache(int capacity) Initialize the LRU cache with positive size capacity.\n- int get(int key) Return the value of the key if the key exists, otherwise return -1.\n- void put(int key, int value) Update the value of the key if the key exists. Otherwise, add the key-value pair to the cache. When the cache reaches its capacity, the key with the lowest frequency is evicted. If there is a tie, the least recently used key is evicted.\n\nThe functions get and put must each run in O(1) average time complexity.",
+    "examples": [
+      "Input: [\"LFUCache\", \"put\", \"put\", \"get\", \"put\", \"get\", \"get\", \"put\", \"get\", \"get\", \"get\"]\n[[2], [1,1], [2,2], [1], [3,3], [2], [3], [4,4], [1], [3], [4]]\nOutput: [null, null, null, 1, null, -1, 3, null, -1, 3, 4]\nExplanation: get(1) returns 1 (freq becomes 2). get(2) returns -1 (evicted). get(3) returns 3 (freq becomes 2). get(1) returns -1 (evicted — freq 2 tied with 3, but 3 is LRU). get(4) returns 4."
+    ],
+    "constraints": [
+      "1 <= capacity <= 3000",
+      "0 <= key <= 10^4",
+      "0 <= value <= 10^5",
+      "At most 10^5 calls will be made to get and put"
+    ],
+    "solutionCode": "class LFUCache {\n    private int capacity;\n    private int minFreq;\n    private Map<Integer, Node> keyToNode;\n    private Map<Integer, LinkedHashMap<Integer, Node>> freqToKeys;\n\n    class Node {\n        int key, value, freq;\n        Node(int key, int value) {\n            this.key = key;\n            this.value = value;\n            this.freq = 1;\n        }\n    }\n\n    public LFUCache(int capacity) {\n        this.capacity = capacity;\n        this.minFreq = 0;\n        this.keyToNode = new HashMap<>();\n        this.freqToKeys = new HashMap<>();\n    }\n\n    public int get(int key) {\n        if (!keyToNode.containsKey(key)) return -1;\n        Node node = keyToNode.get(key);\n        updateFreq(node);\n        return node.value;\n    }\n\n    public void put(int key, int value) {\n        if (capacity == 0) return;\n\n        if (keyToNode.containsKey(key)) {\n            Node node = keyToNode.get(key);\n            node.value = value;\n            updateFreq(node);\n        } else {\n            if (keyToNode.size() >= capacity) {\n                LinkedHashMap<Integer, Node> minFreqMap = freqToKeys.get(minFreq);\n                int evictKey = minFreqMap.keySet().iterator().next();\n                minFreqMap.remove(evictKey);\n                keyToNode.remove(evictKey);\n            }\n            Node node = new Node(key, value);\n            keyToNode.put(key, node);\n            freqToKeys.computeIfAbsent(1, k -> new LinkedHashMap<>()).put(key, node);\n            minFreq = 1;\n        }\n    }\n\n    private void updateFreq(Node node) {\n        int oldFreq = node.freq;\n        freqToKeys.get(oldFreq).remove(node.key);\n        if (freqToKeys.get(oldFreq).isEmpty()) {\n            freqToKeys.remove(oldFreq);\n            if (minFreq == oldFreq) minFreq++;\n        }\n        node.freq++;\n        freqToKeys.computeIfAbsent(node.freq, k -> new LinkedHashMap<>()).put(node.key, node);\n    }\n}",
+    "explanation": "Two maps: keyToNode for O(1) key lookup, and freqToKeys which groups nodes by frequency. Each frequency bucket is a LinkedHashMap (insertion order = recency).\n\nOn get/put, move the node from its current frequency bucket to the next one. Track minFreq — when a bucket empties, increment it.\n\nOn eviction, remove the first entry from the smallest frequency bucket (least frequent). LinkedHashMap's insertion order handles the LRU tiebreaker.",
+    "timeComplexity": "O(1) average for get and put",
+    "spaceComplexity": "O(capacity)",
+    "exampleWalkthrough": "capacity = 2\n\nput(1,1): node(1,1,freq=1). freq=1: {1}. minFreq=1\nput(2,2): node(2,2,freq=1). freq=1: {1,2}. minFreq=1\nget(1): node(1), update: freq1→freq2. freq=1: {2}, freq=2: {1}. minFreq=2\nput(3,3): full! evict from freq1: key 2. freq=1: {}. Add node(3,3,freq=1). freq=1: {3}, freq=2: {1}. minFreq=1\nget(2): not in map → -1\nget(3): node(3), update: freq1→freq2. freq=1: {}, freq=2: {1,3}. minFreq=2\nput(4,4): full! evict from freq2: key 1 (LRU in freq2). freq=2: {3}. Add node(4,4,freq=1). freq=1: {4}, freq=2: {3}. minFreq=1\nget(1): not in map → -1\nget(3): node(3), update: freq2→freq3. freq=2: {}, freq=3: {3}. minFreq=3\nget(4): node(4), update: freq1→freq2. freq=1: {}, freq=2: {4}, freq=3: {3}. minFreq=2"
   }
 ]
