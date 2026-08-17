@@ -366,5 +366,27 @@
     "timeComplexity": "O(h) where h is the tree height",
     "spaceComplexity": "O(1)",
     "exampleWalkthrough": "Tree:        6\n           / \\\n          2   8\n         / \\ / \\\n        0  4 7  9\n          / \\\n         3   5\n\np=2, q=8:\n  curr=6: 2<6 and 8>6 → split → return 6\n\np=2, q=4:\n  curr=6: 2<6 and 4<6 → go left\n  curr=2: 2==2 and 4>2 → split → return 2"
+  },
+  {
+    "id": "coin-change",
+    "name": "Coin Change",
+    "number": 322,
+    "difficulty": "Medium",
+    "description": "You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.\n\nReturn the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.\n\nYou may assume that you have an infinite number of each kind of coin.",
+    "examples": [
+      "Input: coins = [1,2,5], amount = 11\nOutput: 3\nExplanation: 11 = 5 + 5 + 1",
+      "Input: coins = [2], amount = 3\nOutput: -1",
+      "Input: coins = [1], amount = 0\nOutput: 0"
+    ],
+    "constraints": [
+      "1 <= coins.length <= 12",
+      "1 <= coins[i] <= 2^31 - 1",
+      "0 <= amount <= 10^4"
+    ],
+    "solutionCode": "class Solution {\n    public int coinChange(int[] coins, int amount) {\n        int[] dp = new int[amount + 1];\n        Arrays.fill(dp, amount + 1);\n        dp[0] = 0;\n\n        for (int i = 1; i <= amount; i++) {\n            for (int coin : coins) {\n                if (coin <= i) {\n                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);\n                }\n            }\n        }\n\n        return dp[amount] > amount ? -1 : dp[amount];\n    }\n}",
+    "explanation": "Bottom-up DP. dp[i] = fewest coins to make amount i.\n\nStart with dp[0] = 0 (zero coins for zero amount). For each amount from 1 to target, try every coin: if the coin fits (coin <= i), the answer is min of current value or dp[i-coin] + 1.\n\nThe +1 is the coin we're using. We look at dp[i-coin] because that tells us the best way to make the remaining amount.\n\nFill dp with amount+1 initially (an impossible value) so we can detect when no combination works.",
+    "timeComplexity": "O(amount * coins.length)",
+    "spaceComplexity": "O(amount)",
+    "exampleWalkthrough": "coins = [1,2,5], amount = 11\ndp[0] = 0, dp[1..11] = 12 (impossible)\n\ni=1: coin=1 → dp[1] = min(12, dp[0]+1) = 1\ni=2: coin=1 → dp[2] = min(12, dp[1]+1) = 2. coin=2 → dp[2] = min(2, dp[0]+1) = 1\ni=3: coin=1 → dp[3] = min(12, dp[2]+1) = 2. coin=2 → dp[3] = min(2, dp[1]+1) = 2\ni=4: coin=2 → dp[4] = min(12, dp[2]+1) = 2. coin=1 → already 2.\ni=5: coin=5 → dp[5] = min(12, dp[0]+1) = 1\ni=6: coin=1 → dp[6] = min(12, dp[5]+1) = 2\ni=7: coin=2 → dp[7] = min(12, dp[5]+1) = 2\ni=8: coin=1 → dp[8] = min(12, dp[7]+1) = 3\ni=9: coin=2 → dp[9] = min(12, dp[7]+1) = 3\ni=10: coin=5 → dp[10] = min(12, dp[5]+1) = 2\ni=11: coin=1 → dp[11] = min(12, dp[10]+1) = 3\n\nResult: 3"
   }
 ]
