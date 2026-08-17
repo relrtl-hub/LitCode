@@ -129,5 +129,26 @@
     "timeComplexity": "O(1)",
     "spaceComplexity": "O(1)",
     "exampleWalkthrough": "num = 1994\n\nvalues[] = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1}\n\n1994 >= 1000 → append \"M\", num = 994\n994 >= 900 → append \"CM\", num = 94\n94 >= 90 → append \"XC\", num = 4\n4 >= 4 → append \"IV\", num = 0\n\nResult: \"MCMXCIV\""
+  },
+  {
+    "id": "3sum",
+    "name": "3Sum",
+    "number": 15,
+    "difficulty": "Medium",
+    "description": "Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.\n\nNotice that the solution set must not contain duplicate triplets.",
+    "examples": [
+      "Input: nums = [-1,0,1,2,-1,-4]\nOutput: [[-1,-1,2],[-1,0,1]]\nExplanation: nums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0. nums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0. nums[0] + nums[4] + nums[5] = (-1) + (-1) + (-4) is not 0. nums[0] + nums[2] + nums[4] = (-1) + 1 + (-1) = 0. The distinct triplets are [-1,0,1] and [-1,-1,2].",
+      "Input: nums = [0,1,1]\nOutput: []\nExplanation: The only possible triplet does not sum up to 0.",
+      "Input: nums = [0,0,0]\nOutput: [[0,0,0]]\nExplanation: The only possible triplet sums up to 0."
+    ],
+    "constraints": [
+      "3 <= nums.length <= 3000",
+      "-10^5 <= nums[i] <= 10^5"
+    ],
+    "solutionCode": "class Solution {\n    public List<List<Integer>> threeSum(int[] nums) {\n        List<List<Integer>> result = new ArrayList<>();\n        Arrays.sort(nums);\n\n        for (int i = 0; i < nums.length - 2; i++) {\n            if (i > 0 && nums[i] == nums[i - 1]) continue;\n            if (nums[i] > 0) break;\n\n            int left = i + 1, right = nums.length - 1;\n\n            while (left < right) {\n                int sum = nums[i] + nums[left] + nums[right];\n\n                if (sum < 0) {\n                    left++;\n                } else if (sum > 0) {\n                    right--;\n                } else {\n                    result.add(Arrays.asList(nums[i], nums[left], nums[right]));\n                    while (left < right && nums[left] == nums[left + 1]) left++;\n                    while (left < right && nums[right] == nums[right - 1]) right--;\n                    left++;\n                    right--;\n                }\n            }\n        }\n\n        return result;\n    }\n}",
+    "explanation": "Sort the array first. Then fix one element (nums[i]) and use two pointers to find pairs that sum to -nums[i].\n\nFor each i, set left = i+1 and right = end. If the total is too small, move left up. If too big, move right down. If it's zero, record the triplet and skip past any duplicates on both sides.\n\nSkip duplicate i values too — if nums[i] == nums[i-1], we already processed that number.\n\nEarly exit: if nums[i] > 0, no point continuing since all remaining numbers are also >= 0.",
+    "timeComplexity": "O(n²)",
+    "spaceComplexity": "O(1)",
+    "exampleWalkthrough": "nums = [-1,0,1,2,-1,-4]\nAfter sorting: [-4,-1,-1,0,1,2]\n\ni=0 (nums[i]=-4): need sum=4 from remaining. left=1 (-1), right=5 (2). -4+(-1)+2=-3 < 0 → left++. -4+0+2=-2 < 0 → left++. -4+1+2=-1 < 0 → left++. left >= right → done.\n\ni=1 (nums[i]=-1): need sum=1. left=2 (-1), right=5 (2). -1+(-1)+2=0 ✓ → add [-1,-1,2]. Skip dupes: left++, right--. left=3 (0), right=4 (1). -1+0+1=0 ✓ → add [-1,0,1]. left++, right--. left=4, right=3 → done.\n\ni=2 (nums[i]=-1): same as i=1 → skip (duplicate).\n\ni=3 (nums[i]=0): need sum=0. left=4 (1), right=5 (2). 0+1+2=3 > 0 → right--. left >= right → done.\n\nResult: [[-1,-1,2],[-1,0,1]]"
   }
 ]
