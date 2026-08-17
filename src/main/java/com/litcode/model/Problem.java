@@ -15,13 +15,14 @@ public class Problem {
     private String explanation;
     private String timeComplexity;
     private String spaceComplexity;
+    private String exampleWalkthrough;
 
     public Problem() {}
 
     public Problem(String id, String name, int number, String difficulty, String description,
                    List<String> examples, List<String> constraints,
                    String solutionCode, String explanation,
-                   String timeComplexity, String spaceComplexity) {
+                   String timeComplexity, String spaceComplexity, String exampleWalkthrough) {
         this.id = id;
         this.name = name;
         this.number = number;
@@ -33,6 +34,7 @@ public class Problem {
         this.explanation = explanation;
         this.timeComplexity = timeComplexity;
         this.spaceComplexity = spaceComplexity;
+        this.exampleWalkthrough = exampleWalkthrough;
     }
 
     public String getId() { return id; }
@@ -46,4 +48,5 @@ public class Problem {
     public String getExplanation() { return explanation; }
     public String getTimeComplexity() { return timeComplexity; }
     public String getSpaceComplexity() { return spaceComplexity; }
+    public String getExampleWalkthrough() { return exampleWalkthrough; }
 }

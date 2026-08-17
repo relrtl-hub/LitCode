@@ -155,6 +155,13 @@
                     <div class="section-title">Explanation</div>
                     <div class="explanation-text">${formatExplanation(p.explanation)}</div>
                 </div>
+
+                ${p.exampleWalkthrough ? `
+                <div class="section">
+                    <div class="section-title">Example Walkthrough</div>
+                    <div class="code-block">${formatExplanation(p.exampleWalkthrough)}</div>
+                </div>
+                ` : ''}
             `;
         }
 

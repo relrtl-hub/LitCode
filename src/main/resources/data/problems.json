@@ -19,6 +19,7 @@
     "solutionCode": "class Solution {\n    public int[] twoSum(int[] nums, int target) {\n        Map<Integer, Integer> seen = new HashMap<>();\n        for (int i = 0; i < nums.length; i++) {\n            int complement = target - nums[i];\n            if (seen.containsKey(complement)) {\n                return new int[] { seen.get(complement), i };\n            }\n            seen.put(nums[i], i);\n        }\n        return new int[] {};\n    }\n}",
     "explanation": "Use a HashMap to store each number's index as we iterate. For each number, calculate the complement (target - current). If the complement is already in the map, we found our pair.\n\nThis avoids the brute-force O(n^2) approach of checking every pair. The map gives O(1) lookup, so we only pass through the array once.",
     "timeComplexity": "O(n)",
-    "spaceComplexity": "O(n)"
+    "spaceComplexity": "O(n)",
+    "exampleWalkthrough": "Let's trace through Example 1: nums = [2,7,11,15], target = 9\n\nStep 1: i=0, nums[0]=2\n  complement = 9 - 2 = 7\n  seen = {} — 7 not found\n  seen.put(2, 0) → seen = {2:0}\n\nStep 2: i=1, nums[1]=7\n  complement = 9 - 7 = 2\n  seen = {2:0} — 2 FOUND at index 0!\n  return [0, 1]\n\nThe algorithm found the pair (2,7) in just 2 steps instead of checking all 6 possible pairs."
   }
 ]
