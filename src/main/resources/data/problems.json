@@ -21,5 +21,27 @@
     "timeComplexity": "O(n)",
     "spaceComplexity": "O(n)",
     "exampleWalkthrough": "Let's trace through Example 1: nums = [2,7,11,15], target = 9\n\nStep 1: i=0, nums[0]=2\n  complement = 9 - 2 = 7\n  seen = {} — 7 not found\n  seen.put(2, 0) → seen = {2:0}\n\nStep 2: i=1, nums[1]=7\n  complement = 9 - 7 = 2\n  seen = {2:0} — 2 FOUND at index 0!\n  return [0, 1]\n\nThe algorithm found the pair (2,7) in just 2 steps instead of checking all 6 possible pairs."
+  },
+  {
+    "id": "add-two-numbers",
+    "name": "Add Two Numbers",
+    "number": 2,
+    "difficulty": "Medium",
+    "description": "You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.\n\nYou may assume the two numbers do not contain any leading zero, except the number 0 itself.",
+    "examples": [
+      "Input: l1 = [2,4,3], l2 = [5,6,4]\nOutput: [7,0,8]\nExplanation: 342 + 465 = 807.",
+      "Input: l1 = [0], l2 = [0]\nOutput: [0]",
+      "Input: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]\nOutput: [8,9,9,9,0,0,0,1]"
+    ],
+    "constraints": [
+      "The number of nodes in each linked list is in the range [1, 100]",
+      "0 <= Node.val <= 9",
+      "It is guaranteed the list represents a number with no leading zeros"
+    ],
+    "solutionCode": "class Solution {\n    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {\n        ListNode dummy = new ListNode(0);\n        ListNode current = dummy;\n        int carry = 0;\n\n        while (l1 != null || l2 != null || carry != 0) {\n            int sum = carry;\n            if (l1 != null) { sum += l1.val; l1 = l1.next; }\n            if (l2 != null) { sum += l2.val; l2 = l2.next; }\n            carry = sum / 10;\n            current.next = new ListNode(sum % 10);\n            current = current.next;\n        }\n\n        return dummy.next;\n    }\n}",
+    "explanation": "Use a dummy head node to simplify list construction. Iterate through both lists simultaneously, adding digits plus carry. Use integer division for carry (sum/10) and modulo for the digit (sum%10). Continue until both lists are exhausted and carry is zero.\n\nThe dummy head eliminates edge cases around the first node — we just return dummy.next at the end.",
+    "timeComplexity": "O(max(m,n))",
+    "spaceComplexity": "O(max(m,n))",
+    "exampleWalkthrough": "Let's trace Example 1: l1 = [2,4,3] (342), l2 = [5,6,4] (465)\n\nStart: dummy → 0, carry = 0\n\nStep 1: l1.val=2, l2.val=5\n  sum = 0 + 2 + 5 = 7\n  carry = 7/10 = 0\n  dummy → 0 → 7\n\nStep 2: l1.val=4, l2.val=6\n  sum = 0 + 4 + 6 = 10\n  carry = 10/10 = 1\n  dummy → 0 → 7 → 0\n\nStep 3: l1.val=3, l2.val=4\n  sum = 1 + 3 + 4 = 8\n  carry = 8/10 = 0\n  dummy → 0 → 7 → 0 → 8\n\nBoth lists null, carry=0 → done. Result: [7,0,8] = 807"
   }
 ]
