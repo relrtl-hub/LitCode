@@ -215,5 +215,49 @@
     "timeComplexity": "O(n^(t/m)) where n = candidates count, t = target, m = minimum value",
     "spaceComplexity": "O(t/m) for the recursion depth",
     "exampleWalkthrough": "candidates = [2,3,6,7], target = 7\nSorted: [2,3,6,7]\n\nbacktrack(7, 0, [])\n  i=0: add 2 → backtrack(5, 0, [2])\n    i=0: add 2 → backtrack(3, 0, [2,2])\n      i=0: add 2 → backtrack(1, 0, [2,2,2])\n        i=0: 2 > 1 → break\n      i=1: add 3 → backtrack(0, 1, [2,2,3]) → remaining=0 → add [2,2,3]\n    i=1: add 3 → backtrack(2, 1, [2,3])\n      i=1: 3 > 2 → break\n    i=2: 6 > 5 → break\n  i=1: add 3 → backtrack(4, 1, [3])\n    i=1: add 3 → backtrack(1, 1, [3,3]) → 3 > 1 → break\n  i=2: 6 > 7? No → add 6 → backtrack(1, 2, [6]) → 6 > 1 → break\n  i=3: add 7 → backtrack(0, 3, [7]) → remaining=0 → add [7]\n\nResult: [[2,2,3],[7]]"
+  },
+  {
+    "id": "permutations",
+    "name": "Permutations",
+    "number": 46,
+    "difficulty": "Medium",
+    "description": "Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.",
+    "examples": [
+      "Input: nums = [1,2,3]\nOutput: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]",
+      "Input: nums = [0,1]\nOutput: [[0,1],[1,0]]",
+      "Input: nums = [1]\nOutput: [[1]]"
+    ],
+    "constraints": [
+      "1 <= nums.length <= 6",
+      "-10 <= nums[i] <= 10",
+      "All the integers of nums are unique"
+    ],
+    "solutionCode": "class Solution {\n    public List<List<Integer>> permute(int[] nums) {\n        List<List<Integer>> result = new ArrayList<>();\n        backtrack(nums, new ArrayList<>(), new boolean[nums.length], result);\n        return result;\n    }\n\n    private void backtrack(int[] nums, List<Integer> current, boolean[] used, List<List<Integer>> result) {\n        if (current.size() == nums.length) {\n            result.add(new ArrayList<>(current));\n            return;\n        }\n\n        for (int i = 0; i < nums.length; i++) {\n            if (used[i]) continue;\n\n            used[i] = true;\n            current.add(nums[i]);\n            backtrack(nums, current, used, result);\n            current.remove(current.size() - 1);\n            used[i] = false;\n        }\n    }\n}",
+    "explanation": "Backtracking: build permutations one element at a time. Use a boolean[] to track which elements are already in the current permutation.\n\nAt each step, try every unused element. Add it, recurse, then remove it (backtrack). When the current permutation has all elements, record it.\n\nNo sorting needed since we try every element at every position.",
+    "timeComplexity": "O(n * n!)",
+    "spaceComplexity": "O(n) for recursion and used array",
+    "exampleWalkthrough": "nums = [1,2,3]\n\nbacktrack([], [F,F,F])\n  i=0: use 1 → backtrack([1], [T,F,F])\n    i=1: use 2 → backtrack([1,2], [T,T,F])\n      i=2: use 3 → backtrack([1,2,3], [T,T,T]) → add [1,2,3]\n    i=2: use 3 → backtrack([1,3], [T,F,T])\n      i=1: use 2 → backtrack([1,3,2], [T,T,T]) → add [1,3,2]\n  i=1: use 2 → backtrack([2], [F,T,F])\n    i=0: use 1 → backtrack([2,1], [T,T,F])\n      i=2: use 3 → backtrack([2,1,3], [T,T,T]) → add [2,1,3]\n    i=2: use 3 → backtrack([2,3], [F,T,T])\n      i=0: use 1 → backtrack([2,3,1], [T,T,T]) → add [2,3,1]\n  i=2: use 3 → backtrack([3], [F,F,T])\n    i=0: use 1 → backtrack([3,1], [T,F,T])\n      i=1: use 2 → backtrack([3,1,2], [T,T,T]) → add [3,1,2]\n    i=1: use 2 → backtrack([3,2], [F,T,T])\n      i=0: use 1 → backtrack([3,2,1], [T,T,T]) → add [3,2,1]\n\nResult: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]"
+  },
+  {
+    "id": "spiral-matrix",
+    "name": "Spiral Matrix",
+    "number": 54,
+    "difficulty": "Medium",
+    "description": "Given an m x n matrix, return all elements of the matrix in spiral order.",
+    "examples": [
+      "Input: matrix = [[1,2,3],[4,5,6],[7,8,9]]\nOutput: [1,2,3,6,9,8,7,4,5]",
+      "Input: matrix = [[1,2,3,4],[5,6,7,8],[9,10,11,12]]\nOutput: [1,2,3,4,8,12,11,10,9,5,6,7]"
+    ],
+    "constraints": [
+      "m == matrix.length",
+      "n == matrix[i].length",
+      "1 <= m, n <= 10",
+      "-100 <= matrix[i][j] <= 100"
+    ],
+    "solutionCode": "class Solution {\n    public List<Integer> spiralOrder(int[][] matrix) {\n        List<Integer> result = new ArrayList<>();\n        int top = 0, bottom = matrix.length - 1;\n        int left = 0, right = matrix[0].length - 1;\n\n        while (top <= bottom && left <= right) {\n            for (int i = left; i <= right; i++) {\n                result.add(matrix[top][i]);\n            }\n            top++;\n\n            for (int i = top; i <= bottom; i++) {\n                result.add(matrix[i][right]);\n            }\n            right--;\n\n            if (top <= bottom) {\n                for (int i = right; i >= left; i--) {\n                    result.add(matrix[bottom][i]);\n                }\n                bottom--;\n            }\n\n            if (left <= right) {\n                for (int i = bottom; i >= top; i--) {\n                    result.add(matrix[i][left]);\n                }\n                left++;\n            }\n        }\n\n        return result;\n    }\n}",
+    "explanation": "Four boundaries: top, bottom, left, right. Peel the matrix layer by layer in a spiral.\n\nGo right across the top row, then down the right column, then left across the bottom row, then up the left column. After each pass, shrink the corresponding boundary inward.\n\nThe if-checks before bottom and left passes handle the case where we've run out of rows or columns — without them we'd double-count elements.",
+    "timeComplexity": "O(m*n)",
+    "spaceComplexity": "O(1) excluding output",
+    "exampleWalkthrough": "matrix = [[1,2,3],[4,5,6],[7,8,9]]\nboundaries: top=0, bottom=2, left=0, right=2\n\nPass 1:\n  Right across top row: 1,2,3 → top=1\n  Down right column: 6,9 → right=1\n  Left across bottom row: 8,7 → bottom=1\n  Up left column: 4 → left=1\n\nPass 2 (top=1, bottom=1, left=1, right=1):\n  Right across top row: 5 → top=2\n  Down right column: (top=2 > bottom=1) → nothing → right=0\n  bottom check: top=2 > bottom=1 → skip\n  left check: left=1 > right=0 → skip\n\nResult: [1,2,3,6,9,8,7,4,5]"
   }
 ]
