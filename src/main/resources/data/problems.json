@@ -171,5 +171,26 @@
     "timeComplexity": "O(n²)",
     "spaceComplexity": "O(1)",
     "exampleWalkthrough": "nums = [-1,2,1,-4], target = 1\nAfter sorting: [-4,-1,1,2]\n\nclosest = -4+(-1)+1 = -4\n\ni=0 (nums[i]=-4): left=1 (-1), right=3 (2). sum=-4+(-1)+2=-3. |−3−1|=4 > |−4−1|=5? No → closest=-3. sum < target → left++. left=2 (1), right=3 (2). sum=-4+1+2=-1. |−1−1|=2 < |−3−1|=4 → closest=-1. sum < target → left++. left >= right → done.\n\ni=1 (nums[i]=-1): left=2 (1), right=3 (2). sum=-1+1+2=2. |2−1|=1 < |−1−1|=2 → closest=2. sum > target → right--. left >= right → done.\n\nResult: 2"
+  },
+  {
+    "id": "next-permutation",
+    "name": "Next Permutation",
+    "number": 31,
+    "difficulty": "Medium",
+    "description": "A permutation of an array of integers is an arrangement of its members into a sequence or linear order.\n\nGiven an array of integers nums, find the next permutation of nums. The replacement must be in place and use only constant extra memory.\n\nIf such arrangement is not possible, it must rearrange it as the lowest possible order (i.e., sorted in ascending order).",
+    "examples": [
+      "Input: nums = [1,2,3]\nOutput: [1,3,2]\nExplanation: The next permutation of [1,2,3] is [1,3,2].",
+      "Input: nums = [3,2,1]\nOutput: [1,2,3]\nExplanation: [3,2,1] is the highest permutation, so it wraps around to the lowest.",
+      "Input: nums = [1,1,5]\nOutput: [1,5,1]\nExplanation: The next permutation of [1,1,5] is [1,5,1]."
+    ],
+    "constraints": [
+      "1 <= nums.length <= 100",
+      "0 <= nums[i] <= 100"
+    ],
+    "solutionCode": "class Solution {\n    public void nextPermutation(int[] nums) {\n        int i = nums.length - 2;\n\n        while (i >= 0 && nums[i] >= nums[i + 1]) {\n            i--;\n        }\n\n        if (i >= 0) {\n            int j = nums.length - 1;\n            while (nums[j] <= nums[i]) {\n                j--;\n            }\n            swap(nums, i, j);\n        }\n\n        reverse(nums, i + 1, nums.length - 1);\n    }\n\n    private void swap(int[] nums, int i, int j) {\n        int temp = nums[i];\n        nums[i] = nums[j];\n        nums[j] = temp;\n    }\n\n    private void reverse(int[] nums, int start, int end) {\n        while (start < end) {\n            swap(nums, start, end);\n            start++;\n            end--;\n        }\n    }\n}",
+    "explanation": "We want the smallest increase to make the number bigger.\n\nStep 1: Find the first pair from the right where nums[i] < nums[i+1]. This is the \"pivot\" — everything after it is non-increasing (already the biggest arrangement of those digits).\n\nStep 2: Find the smallest number to the right of i that is bigger than nums[i]. Swap them. Now the suffix is still non-increasing.\n\nStep 3: Reverse the suffix (everything after i). This gives us the smallest possible arrangement of those digits, which is what we want for the \"next\" permutation.\n\nIf no pivot exists (array is fully descending), the whole array reverses to become the smallest permutation.",
+    "timeComplexity": "O(n)",
+    "spaceComplexity": "O(1)",
+    "exampleWalkthrough": "nums = [1,3,5,4,2]\n\nStep 1: Find pivot. Scan from right:\n  2 vs 4: 2 < 4 → keep going\n  4 vs 5: 4 < 5 → keep going\n  5 vs 3: 5 > 3 → keep going\n  3 vs 1: 3 > 1 → keep going\nWait, we need nums[i] < nums[i+1]:\n  nums[3]=4, nums[4]=2: 4 > 2 → no\n  nums[2]=5, nums[3]=4: 5 > 4 → no\n  nums[1]=3, nums[2]=5: 3 < 5 → pivot at i=1\n\nStep 2: Find smallest num to right of i=1 that is > 3.\n  nums[4]=2: 2 <= 3 → skip\n  nums[3]=4: 4 > 3 → swap(1,3)\n  Array: [1,4,5,3,2]\n\nStep 3: Reverse from index 2 to end.\n  [1,4, | 5,3,2] → [1,4, | 2,3,5]\n\nResult: [1,4,2,3,5]"
   }
 ]
