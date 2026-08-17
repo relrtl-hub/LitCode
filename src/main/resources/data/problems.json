@@ -322,5 +322,26 @@
     "timeComplexity": "O(1) average for get and put",
     "spaceComplexity": "O(capacity)",
     "exampleWalkthrough": "capacity = 2\n\nput(1,1): node(1,1,freq=1). freq=1: {1}. minFreq=1\nput(2,2): node(2,2,freq=1). freq=1: {1,2}. minFreq=1\nget(1): node(1), update: freq1→freq2. freq=1: {2}, freq=2: {1}. minFreq=2\nput(3,3): full! evict from freq1: key 2. freq=1: {}. Add node(3,3,freq=1). freq=1: {3}, freq=2: {1}. minFreq=1\nget(2): not in map → -1\nget(3): node(3), update: freq1→freq2. freq=1: {}, freq=2: {1,3}. minFreq=2\nput(4,4): full! evict from freq2: key 1 (LRU in freq2). freq=2: {3}. Add node(4,4,freq=1). freq=1: {4}, freq=2: {3}. minFreq=1\nget(1): not in map → -1\nget(3): node(3), update: freq2→freq3. freq=2: {}, freq=3: {3}. minFreq=3\nget(4): node(4), update: freq1→freq2. freq=1: {}, freq=2: {4}, freq=3: {3}. minFreq=2"
+  },
+  {
+    "id": "reverse-linked-list",
+    "name": "Reverse Linked List",
+    "number": 206,
+    "difficulty": "Easy",
+    "description": "Given the head of a singly linked list, reverse the list, and return the reversed list.",
+    "examples": [
+      "Input: head = [1,2,3,4,5]\nOutput: [5,4,3,2,1]",
+      "Input: head = [1,2]\nOutput: [2,1]",
+      "Input: head = []\nOutput: []"
+    ],
+    "constraints": [
+      "The number of nodes in the list is the range [0, 5000]",
+      "-5000 <= Node.val <= 5000"
+    ],
+    "solutionCode": "class Solution {\n    public ListNode reverseList(ListNode head) {\n        ListNode prev = null;\n        ListNode curr = head;\n\n        while (curr != null) {\n            ListNode next = curr.next;\n            curr.next = prev;\n            prev = curr;\n            curr = next;\n        }\n\n        return prev;\n    }\n}",
+    "explanation": "Walk through the list with two pointers: prev and curr. At each step, save the next node, point curr's next backwards to prev, then move both pointers forward.\n\nWhen curr becomes null, prev is at the new head (the old last node).",
+    "timeComplexity": "O(n)",
+    "spaceComplexity": "O(1)",
+    "exampleWalkthrough": "head = [1,2,3,4,5]\n\nStep 1: prev=null, curr=1. next=2. 1.next=null. prev=1, curr=2.\n  List: null<-1  2->3->4->5\n\nStep 2: prev=1, curr=2. next=3. 2.next=1. prev=2, curr=3.\n  List: null<-1<-2  3->4->5\n\nStep 3: prev=2, curr=3. next=4. 3.next=2. prev=3, curr=4.\n  List: null<-1<-2<-3  4->5\n\nStep 4: prev=3, curr=4. next=5. 4.next=3. prev=4, curr=5.\n  List: null<-1<-2<-3<-4  5\n\nStep 5: prev=4, curr=5. next=null. 5.next=4. prev=5, curr=null.\n  List: null<-1<-2<-3<-4<-5\n\ncurr=null → return prev=5.\nResult: [5,4,3,2,1]"
   }
 ]
