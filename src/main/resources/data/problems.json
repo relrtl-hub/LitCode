@@ -150,5 +150,26 @@
     "timeComplexity": "O(n²)",
     "spaceComplexity": "O(1)",
     "exampleWalkthrough": "nums = [-1,0,1,2,-1,-4]\nAfter sorting: [-4,-1,-1,0,1,2]\n\ni=0 (nums[i]=-4): need sum=4 from remaining. left=1 (-1), right=5 (2). -4+(-1)+2=-3 < 0 → left++. -4+0+2=-2 < 0 → left++. -4+1+2=-1 < 0 → left++. left >= right → done.\n\ni=1 (nums[i]=-1): need sum=1. left=2 (-1), right=5 (2). -1+(-1)+2=0 ✓ → add [-1,-1,2]. Skip dupes: left++, right--. left=3 (0), right=4 (1). -1+0+1=0 ✓ → add [-1,0,1]. left++, right--. left=4, right=3 → done.\n\ni=2 (nums[i]=-1): same as i=1 → skip (duplicate).\n\ni=3 (nums[i]=0): need sum=0. left=4 (1), right=5 (2). 0+1+2=3 > 0 → right--. left >= right → done.\n\nResult: [[-1,-1,2],[-1,0,1]]"
+  },
+  {
+    "id": "3sum-closest",
+    "name": "3Sum Closest",
+    "number": 16,
+    "difficulty": "Medium",
+    "description": "Given an integer array nums of length n and an integer target, find three integers in nums such that the sum is closest to target.\n\nReturn the sum of the three integers.\n\nYou may assume that each input would have exactly one solution.",
+    "examples": [
+      "Input: nums = [-1,2,1,-4], target = 1\nOutput: 2\nExplanation: The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).",
+      "Input: nums = [0,1,2], target = 3\nOutput: 3\nExplanation: The sum that is closest to the target is 3. (0 + 1 + 2 = 3)."
+    ],
+    "constraints": [
+      "3 <= nums.length <= 500",
+      "-1000 <= nums[i] <= 1000",
+      "-10^4 <= target <= 10^4"
+    ],
+    "solutionCode": "class Solution {\n    public int threeSumClosest(int[] nums, int target) {\n        Arrays.sort(nums);\n        int closest = nums[0] + nums[1] + nums[2];\n\n        for (int i = 0; i < nums.length - 2; i++) {\n            int left = i + 1, right = nums.length - 1;\n\n            while (left < right) {\n                int sum = nums[i] + nums[left] + nums[right];\n\n                if (Math.abs(sum - target) < Math.abs(closest - target)) {\n                    closest = sum;\n                }\n\n                if (sum < target) {\n                    left++;\n                } else if (sum > target) {\n                    right--;\n                } else {\n                    return target;\n                }\n            }\n        }\n\n        return closest;\n    }\n}",
+    "explanation": "Same two-pointer technique as 3Sum, but instead of looking for exactly zero, we track which sum is closest to target.\n\nSort the array. Fix one element, use two pointers for the other two. At each step, compute the sum and compare its distance from target to our current best. If we hit target exactly, return immediately.\n\nMove left up if sum is too small, right down if too big — same logic as before, just tracking closest instead of exact matches.",
+    "timeComplexity": "O(n²)",
+    "spaceComplexity": "O(1)",
+    "exampleWalkthrough": "nums = [-1,2,1,-4], target = 1\nAfter sorting: [-4,-1,1,2]\n\nclosest = -4+(-1)+1 = -4\n\ni=0 (nums[i]=-4): left=1 (-1), right=3 (2). sum=-4+(-1)+2=-3. |−3−1|=4 > |−4−1|=5? No → closest=-3. sum < target → left++. left=2 (1), right=3 (2). sum=-4+1+2=-1. |−1−1|=2 < |−3−1|=4 → closest=-1. sum < target → left++. left >= right → done.\n\ni=1 (nums[i]=-1): left=2 (1), right=3 (2). sum=-1+1+2=2. |2−1|=1 < |−1−1|=2 → closest=2. sum > target → right--. left >= right → done.\n\nResult: 2"
   }
 ]
