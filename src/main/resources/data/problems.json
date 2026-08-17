@@ -109,5 +109,25 @@
     "timeComplexity": "O(n)",
     "spaceComplexity": "O(1)",
     "exampleWalkthrough": "height = [1,8,6,2,5,4,8,3,7]\n\nleft=0 (h=1), right=8 (h=7): area = min(1,7)*8 = 8. Move left (1<7).\nleft=1 (h=8), right=8 (h=7): area = min(8,7)*7 = 49. Move right (7<8).\nleft=1 (h=8), right=7 (h=3): area = min(8,3)*6 = 18. Move right (3<8).\nleft=1 (h=8), right=6 (h=8): area = min(8,8)*5 = 40. Move right (8==8).\nleft=1 (h=8), right=5 (h=4): area = min(8,4)*4 = 16. Move right (4<8).\nleft=1 (h=8), right=4 (h=5): area = min(8,5)*3 = 15. Move right (5<8).\nleft=1 (h=8), right=3 (h=2): area = min(8,2)*2 = 4. Move right (2<8).\nleft=1 (h=8), right=2 (h=6): area = min(8,6)*1 = 6. Move right (6<8).\n\nleft=1, right=2: left not < right? left=1, right=2 → left < right → true. One more:\nleft=1 (h=8), right=2 (h=6): area = 6. Move right.\n\nleft=1, right=1: loop ends.\n\nMaximum = 49."
+  },
+  {
+    "id": "integer-to-roman",
+    "name": "Integer to Roman",
+    "number": 12,
+    "difficulty": "Medium",
+    "description": "Given an integer, convert it to a Roman numeral.\n\nRoman numerals are represented by seven different symbols: I, V, X, L, C, D, M.\n\nSymbol values: I=1, V=5, X=10, L=50, C=100, D=500, M=1000.\n\nRoman numerals are formed by appending conversions of decimal place values from highest to lowest. Subtractive forms are used for 4 (IV), 9 (IX), 40 (XL), 90 (XC), 400 (CD), and 900 (CM).",
+    "examples": [
+      "Input: num = 3749\nOutput: \"MMMDCCXLIX\"\nExplanation: 3000 = MMM, 700 = DCC, 40 = XL, 9 = IX.",
+      "Input: num = 58\nOutput: \"LVIII\"\nExplanation: 50 = L, 8 = VIII.",
+      "Input: num = 1994\nOutput: \"MCMXCIV\"\nExplanation: 1000 = M, 900 = CM, 90 = XC, 4 = IV."
+    ],
+    "constraints": [
+      "1 <= num <= 3999"
+    ],
+    "solutionCode": "class Solution {\n    public String intToRoman(int num) {\n        int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};\n        String[] symbols = {\"M\", \"CM\", \"D\", \"CD\", \"C\", \"XC\", \"L\", \"XL\", \"X\", \"IX\", \"V\", \"IV\", \"I\"};\n\n        StringBuilder result = new StringBuilder();\n\n        for (int i = 0; i < values.length; i++) {\n            while (num >= values[i]) {\n                result.append(symbols[i]);\n                num -= values[i];\n            }\n        }\n\n        return result.toString();\n    }\n}",
+    "explanation": "Greedy approach. We have a list of all Roman numeral values in descending order, including the subtractive forms (4, 9, 40, 90, 400, 900).\n\nFor each value, we check: is num big enough? If yes, append that symbol and subtract the value. Repeat until num is too small, then move to the next smaller value.\n\nThis works because the values are in descending order, so we always use the largest possible symbol first. The subtractive forms are pre-built into the list, so we never need special logic for 4 or 9.",
+    "timeComplexity": "O(1)",
+    "spaceComplexity": "O(1)",
+    "exampleWalkthrough": "num = 1994\n\nvalues[] = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1}\n\n1994 >= 1000 → append \"M\", num = 994\n994 >= 900 → append \"CM\", num = 94\n94 >= 90 → append \"XC\", num = 4\n4 >= 4 → append \"IV\", num = 0\n\nResult: \"MCMXCIV\""
   }
 ]
