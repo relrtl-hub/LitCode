@@ -343,5 +343,28 @@
     "timeComplexity": "O(n)",
     "spaceComplexity": "O(1)",
     "exampleWalkthrough": "head = [1,2,3,4,5]\n\nStep 1: prev=null, curr=1. next=2. 1.next=null. prev=1, curr=2.\n  List: null<-1  2->3->4->5\n\nStep 2: prev=1, curr=2. next=3. 2.next=1. prev=2, curr=3.\n  List: null<-1<-2  3->4->5\n\nStep 3: prev=2, curr=3. next=4. 3.next=2. prev=3, curr=4.\n  List: null<-1<-2<-3  4->5\n\nStep 4: prev=3, curr=4. next=5. 4.next=3. prev=4, curr=5.\n  List: null<-1<-2<-3<-4  5\n\nStep 5: prev=4, curr=5. next=null. 5.next=4. prev=5, curr=null.\n  List: null<-1<-2<-3<-4<-5\n\ncurr=null → return prev=5.\nResult: [5,4,3,2,1]"
+  },
+  {
+    "id": "lowest-common-ancestor-of-a-bst",
+    "name": "Lowest Common Ancestor of a Binary Search Tree",
+    "number": 235,
+    "difficulty": "Medium",
+    "description": "Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes p and q in the BST.\n\nThe lowest common ancestor is defined as the deepest node that has both p and q as descendants, where a node can be a descendant of itself.",
+    "examples": [
+      "Input: root = [6,2,8,0,4,7,9,null,null,null,3,5], p = 2, q = 8\nOutput: 6\nExplanation: The LCA of nodes 2 and 8 is 6.",
+      "Input: root = [6,2,8,0,4,7,9,null,null,null,3,5], p = 2, q = 4\nOutput: 2\nExplanation: The LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself."
+    ],
+    "constraints": [
+      "The number of nodes in the tree is in the range [2, 10^5]",
+      "-10^9 <= Node.val <= 10^9",
+      "All Node.val are unique",
+      "p != q",
+      "p and q will exist in the BST"
+    ],
+    "solutionCode": "class Solution {\n    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {\n        TreeNode curr = root;\n\n        while (curr != null) {\n            if (p.val < curr.val && q.val < curr.val) {\n                curr = curr.left;\n            } else if (p.val > curr.val && q.val > curr.val) {\n                curr = curr.right;\n            } else {\n                return curr;\n            }\n        }\n\n        return null;\n    }\n}",
+    "explanation": "BST property: left < root < right. If both p and q are smaller than root, LCA must be in the left subtree. If both are larger, LCA is in the right subtree. Otherwise, this node is the split point — one child is on each side, or one of them is this node itself.",
+    "timeComplexity": "O(h) where h is the tree height",
+    "spaceComplexity": "O(1)",
+    "exampleWalkthrough": "Tree:        6\n           / \\\n          2   8\n         / \\ / \\\n        0  4 7  9\n          / \\\n         3   5\n\np=2, q=8:\n  curr=6: 2<6 and 8>6 → split → return 6\n\np=2, q=4:\n  curr=6: 2<6 and 4<6 → go left\n  curr=2: 2==2 and 4>2 → split → return 2"
   }
 ]
