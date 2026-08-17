@@ -259,5 +259,26 @@
     "timeComplexity": "O(m*n)",
     "spaceComplexity": "O(1) excluding output",
     "exampleWalkthrough": "matrix = [[1,2,3],[4,5,6],[7,8,9]]\nboundaries: top=0, bottom=2, left=0, right=2\n\nPass 1:\n  Right across top row: 1,2,3 → top=1\n  Down right column: 6,9 → right=1\n  Left across bottom row: 8,7 → bottom=1\n  Up left column: 4 → left=1\n\nPass 2 (top=1, bottom=1, left=1, right=1):\n  Right across top row: 5 → top=2\n  Down right column: (top=2 > bottom=1) → nothing → right=0\n  bottom check: top=2 > bottom=1 → skip\n  left check: left=1 > right=0 → skip\n\nResult: [1,2,3,6,9,8,7,4,5]"
+  },
+  {
+    "id": "lru-cache",
+    "name": "LRU Cache",
+    "number": 146,
+    "difficulty": "Medium",
+    "description": "Design a data structure that follows the constraints of a Least Recently Used (LRU) cache.\n\nImplement the LRUCache class:\n- LRUCache(int capacity) Initialize the LRU cache with positive size capacity.\n- int get(int key) Return the value of the key if the key exists, otherwise return -1.\n- void put(int key, int value) Update the value of the key if the key exists. Otherwise, add the key-value pair to the cache. If the number of keys exceeds the capacity from this operation, evict the least recently used key.\n\nThe functions get and put must each run in O(1) average time complexity.",
+    "examples": [
+      "Input: [\"LRUCache\", \"put\", \"put\", \"get\", \"put\", \"get\", \"put\", \"get\", \"get\", \"get\"]\n[[2], [1,1], [2,2], [1], [3,3], [2], [4,4], [1], [3], [4]]\nOutput: [null, null, null, 1, null, -1, null, -1, 3, 4]\nExplanation: cache={1=1}, cache={1=1,2=2}, get(1)=1, evict 2, cache={1=1,3=3}, get(2)=-1, evict 1, cache={4=4,3=3}, get(1)=-1, get(3)=3, get(4)=4"
+    ],
+    "constraints": [
+      "1 <= capacity <= 3000",
+      "0 <= key <= 10^4",
+      "0 <= value <= 10^5",
+      "At most 2 * 10^5 calls will be made to get and put"
+    ],
+    "solutionCode": "class LRUCache {\n    private int capacity;\n    private LinkedHashMap<Integer, Integer> cache;\n\n    public LRUCache(int capacity) {\n        this.capacity = capacity;\n        this.cache = new LinkedHashMap<>(capacity, 0.75f, true);\n    }\n\n    public int get(int key) {\n        return cache.getOrDefault(key, -1);\n    }\n\n    public void put(int key, int value) {\n        cache.put(key, value);\n        if (cache.size() > capacity) {\n            cache.remove(cache.keySet().iterator().next());\n        }\n    }\n}",
+    "explanation": "Java's LinkedHashMap with accessOrder=true automatically moves accessed entries to the end. The least recently used entry is always at the beginning.\n\nOn put, if we exceed capacity, remove the first entry (oldest). That's it — LinkedHashMap handles all the reordering internally.\n\nBoth get and put are O(1) on average.",
+    "timeComplexity": "O(1) average for get and put",
+    "spaceComplexity": "O(capacity)",
+    "exampleWalkthrough": "capacity = 2\n\nput(1,1): cache = {1=1}\nput(2,2): cache = {1=1, 2=2}\nget(1): returns 1, cache = {2=2, 1=1} (1 moved to end)\nput(3,3): cache full, evict LRU (2), cache = {1=1, 3=3}\nget(2): returns -1 (evicted)\nput(4,4): cache full, evict LRU (1), cache = {3=3, 4=4}\nget(1): returns -1 (evicted)\nget(3): returns 3, cache = {4=4, 3=3}\nget(4): returns 4, cache = {3=3, 4=4}"
   }
 ]
