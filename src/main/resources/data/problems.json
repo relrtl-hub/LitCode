@@ -63,5 +63,30 @@
     "timeComplexity": "O(n²)",
     "spaceComplexity": "O(1)",
     "exampleWalkthrough": "Let's trace s = \"babad\"\n\ni=0, expand(0,0): 'b' alone → palindrome length 1. best = \"b\"\ni=0, expand(0,1): 'b' vs 'a' → no match. no update.\n\ni=1, expand(1,1): 'a' alone → length 1. no update.\ni=1, expand(1,2): 'a' vs 'b' → no match.\ni=1, expand(0,2): 'b' vs 'b' → match! expand further: left=-1 → stop.\n  palindrome = \"bab\", length 3. best = \"bab\"\n\ni=2, expand(2,2): 'b' alone → length 1.\ni=2, expand(2,3): 'b' vs 'a' → no match.\n\ni=3, expand(3,3): 'a' alone.\ni=3, expand(3,4): 'a' vs 'd' → no match.\n\ni=4, expand(4,4): 'd' alone.\n\nResult: \"bab\""
+  },
+  {
+    "id": "regular-expression-matching",
+    "name": "Regular Expression Matching",
+    "number": 10,
+    "difficulty": "Hard",
+    "description": "Given an input string s and a pattern p, implement regular expression matching with support for '.' and '*'.\n\n'.' matches any single character.\n'*' matches zero or more of the preceding element.\n\nThe matching should cover the entire input string (not partial).",
+    "examples": [
+      "Input: s = \"aa\", p = \"a\"\nOutput: false\nExplanation: \"a\" does not match the entire string \"aa\".",
+      "Input: s = \"aa\", p = \"a*\"\nOutput: true\nExplanation: '*' means zero or more of the preceding element 'a'.",
+      "Input: s = \"ab\", p = \".*\"\nOutput: true\nExplanation: \".*\" means zero or more of any character.",
+      "Input: s = \"aab\", p = \"c*a*b\"\nOutput: true"
+    ],
+    "constraints": [
+      "1 <= s.length <= 20",
+      "1 <= p.length <= 20",
+      "s contains only lowercase English letters",
+      "p contains only lowercase English letters and '.' or '*'",
+      "It is guaranteed that for each '*' in p, there is a previous character to match"
+    ],
+    "solutionCode": "class Solution {\n    public boolean isMatch(String s, String p) {\n        int m = s.length(), n = p.length();\n        boolean[][] dp = new boolean[m + 1][n + 1];\n        dp[0][0] = true;\n\n        for (int j = 2; j <= n; j++) {\n            if (p.charAt(j - 1) == '*') {\n                dp[0][j] = dp[0][j - 2];\n            }\n        }\n\n        for (int i = 1; i <= m; i++) {\n            for (int j = 1; j <= n; j++) {\n                if (p.charAt(j - 1) == '*') {\n                    dp[i][j] = dp[i][j - 2];\n                    if (p.charAt(j - 2) == '.' || p.charAt(j - 2) == s.charAt(i - 1)) {\n                        dp[i][j] = dp[i][j] || dp[i - 1][j];\n                    }\n                } else if (p.charAt(j - 1) == '.' || p.charAt(j - 1) == s.charAt(i - 1)) {\n                    dp[i][j] = dp[i - 1][j - 1];\n                }\n            }\n        }\n\n        return dp[m][n];\n    }\n}",
+    "explanation": "2D dynamic programming. dp[i][j] = true if s[0..i) matches p[0..j).\n\nBase cases: dp[0][0] = true (empty matches empty). dp[0][j] = true for patterns like a*b*c* that can match empty string.\n\nFor '*' in pattern: try matching zero occurrences (dp[i][j-2]) or one+ occurrences (dp[i-1][j] if current chars match).\n\nFor regular char or '.': if chars match, dp[i][j] = dp[i-1][j-1].",
+    "timeComplexity": "O(m*n)",
+    "spaceComplexity": "O(m*n)",
+    "exampleWalkthrough": "Let's trace s = \"aab\", p = \"c*a*b\"\n\ndp table (rows=s, cols=p):\n     ''  c  *  a  *  b\n''    T  F  T  F  T  F\nc     F  T  T  F  T  F\na     F  F  F  T  T  F\na     F  F  F  F  T  F\nb     F  F  F  F  F  T\n\nKey steps:\ndp[0][2] = true (c* matches empty)\ndp[0][4] = true (c*a* matches empty)\n\ni=1 ('c'): dp[1][2] = dp[1][0]=F || dp[0][2]=T → T (c matches c*)\n\ni=2 ('a'): dp[2][3] = dp[1][2]=T → T (a matches a after c*)\ndp[2][4] = dp[2][2]=T → T (a* matches 0)\n\ni=3 ('a'): dp[3][4] = dp[2][4]=T → T (a* matches aa)\n\ni=4 ('b'): dp[5][5] = dp[4][4]=T → T (b matches b)\n\nResult: dp[3][5] = true"
   }
 ]
