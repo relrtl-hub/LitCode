@@ -43,5 +43,25 @@
     "timeComplexity": "O(max(m,n))",
     "spaceComplexity": "O(max(m,n))",
     "exampleWalkthrough": "Let's trace Example 1: l1 = [2,4,3] (342), l2 = [5,6,4] (465)\n\nStart: dummy → 0, carry = 0\n\nStep 1: l1.val=2, l2.val=5\n  sum = 0 + 2 + 5 = 7\n  carry = 7/10 = 0\n  dummy → 0 → 7\n\nStep 2: l1.val=4, l2.val=6\n  sum = 0 + 4 + 6 = 10\n  carry = 10/10 = 1\n  dummy → 0 → 7 → 0\n\nStep 3: l1.val=3, l2.val=4\n  sum = 1 + 3 + 4 = 8\n  carry = 8/10 = 0\n  dummy → 0 → 7 → 0 → 8\n\nBoth lists null, carry=0 → done. Result: [7,0,8] = 807"
+  },
+  {
+    "id": "longest-palindromic-substring",
+    "name": "Longest Palindromic Substring",
+    "number": 5,
+    "difficulty": "Medium",
+    "description": "Given a string s, return the longest palindromic substring in s.",
+    "examples": [
+      "Input: s = \"babad\"\nOutput: \"bab\"\nExplanation: \"aba\" is also a valid answer.",
+      "Input: s = \"cbbd\"\nOutput: \"bb\""
+    ],
+    "constraints": [
+      "1 <= s.length <= 1000",
+      "s consist of only digits and English letters"
+    ],
+    "solutionCode": "class Solution {\n    private int start = 0, maxLen = 0;\n\n    public String longestPalindrome(String s) {\n        for (int i = 0; i < s.length(); i++) {\n            expand(s, i, i);     // odd length\n            expand(s, i, i + 1); // even length\n        }\n        return s.substring(start, start + maxLen);\n    }\n\n    private void expand(String s, int left, int right) {\n        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {\n            left--;\n            right++;\n        }\n        if (right - left - 1 > maxLen) {\n            start = left + 1;\n            maxLen = right - left - 1;\n        }\n    }\n}",
+    "explanation": "Expand around center approach. For each position i, treat it as the center of a palindrome and expand outward in both directions while characters match.\n\nTwo cases per center: odd-length (single center) and even-length (two-character center). Track the longest palindrome found.\n\nEach expansion is O(n) and there are O(n) centers, giving O(n²) total. No extra space needed beyond a few variables.",
+    "timeComplexity": "O(n²)",
+    "spaceComplexity": "O(1)",
+    "exampleWalkthrough": "Let's trace s = \"babad\"\n\ni=0, expand(0,0): 'b' alone → palindrome length 1. best = \"b\"\ni=0, expand(0,1): 'b' vs 'a' → no match. no update.\n\ni=1, expand(1,1): 'a' alone → length 1. no update.\ni=1, expand(1,2): 'a' vs 'b' → no match.\ni=1, expand(0,2): 'b' vs 'b' → match! expand further: left=-1 → stop.\n  palindrome = \"bab\", length 3. best = \"bab\"\n\ni=2, expand(2,2): 'b' alone → length 1.\ni=2, expand(2,3): 'b' vs 'a' → no match.\n\ni=3, expand(3,3): 'a' alone.\ni=3, expand(3,4): 'a' vs 'd' → no match.\n\ni=4, expand(4,4): 'd' alone.\n\nResult: \"bab\""
   }
 ]
