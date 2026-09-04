@@ -1,13 +1,21 @@
 package com.litcode.model;
 
 import java.util.List;
+import java.util.Map;
 
 public class Problem {
 
     private String id;
     private String name;
-    private int number;
+    private Integer number;
     private String difficulty;
+    private String language;
+    private String source;
+    private String category;
+    private String type;
+    private String backendSkill;
+    private List<String> tags;
+    private Map<String, Object> schema;
     private String description;
     private List<String> examples;
     private List<String> constraints;
@@ -39,8 +47,15 @@ public class Problem {
 
     public String getId() { return id; }
     public String getName() { return name; }
-    public int getNumber() { return number; }
+    public Integer getNumber() { return number; }
     public String getDifficulty() { return difficulty; }
+    public String getLanguage() { return language; }
+    public String getSource() { return source; }
+    public String getCategory() { return category; }
+    public String getType() { return type; }
+    public String getBackendSkill() { return backendSkill; }
+    public List<String> getTags() { return tags; }
+    public Map<String, Object> getSchema() { return schema; }
     public String getDescription() { return description; }
     public List<String> getExamples() { return examples; }
     public List<String> getConstraints() { return constraints; }

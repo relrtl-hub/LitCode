@@ -20,7 +20,14 @@
     "explanation": "Use a HashMap to store each number's index as we iterate. For each number, calculate the complement (target - current). If the complement is already in the map, we found our pair.\n\nThis avoids the brute-force O(n^2) approach of checking every pair. The map gives O(1) lookup, so we only pass through the array once.",
     "timeComplexity": "O(n)",
     "spaceComplexity": "O(n)",
-    "exampleWalkthrough": "Let's trace through Example 1: nums = [2,7,11,15], target = 9\n\nStep 1: i=0, nums[0]=2\n  complement = 9 - 2 = 7\n  seen = {} — 7 not found\n  seen.put(2, 0) → seen = {2:0}\n\nStep 2: i=1, nums[1]=7\n  complement = 9 - 7 = 2\n  seen = {2:0} — 2 FOUND at index 0!\n  return [0, 1]\n\nThe algorithm found the pair (2,7) in just 2 steps instead of checking all 6 possible pairs."
+    "exampleWalkthrough": "Let's trace through Example 1: nums = [2,7,11,15], target = 9\n\nStep 1: i=0, nums[0]=2\n  complement = 9 - 2 = 7\n  seen = {} — 7 not found\n  seen.put(2, 0) → seen = {2:0}\n\nStep 2: i=1, nums[1]=7\n  complement = 9 - 7 = 2\n  seen = {2:0} — 2 FOUND at index 0!\n  return [0, 1]\n\nThe algorithm found the pair (2,7) in just 2 steps instead of checking all 6 possible pairs.",
+    "language": "Java",
+    "source": "LeetCode",
+    "category": "Arrays & Hashing",
+    "type": "algorithm",
+    "tags": [
+      "hash map"
+    ]
   },
   {
     "id": "add-two-numbers",
@@ -42,7 +49,14 @@
     "explanation": "Use a dummy head node to simplify list construction. Iterate through both lists simultaneously, adding digits plus carry. Use integer division for carry (sum/10) and modulo for the digit (sum%10). Continue until both lists are exhausted and carry is zero.\n\nThe dummy head eliminates edge cases around the first node — we just return dummy.next at the end.",
     "timeComplexity": "O(max(m,n))",
     "spaceComplexity": "O(max(m,n))",
-    "exampleWalkthrough": "Let's trace Example 1: l1 = [2,4,3] (342), l2 = [5,6,4] (465)\n\nStart: dummy → 0, carry = 0\n\nStep 1: l1.val=2, l2.val=5\n  sum = 0 + 2 + 5 = 7\n  carry = 7/10 = 0\n  dummy → 0 → 7\n\nStep 2: l1.val=4, l2.val=6\n  sum = 0 + 4 + 6 = 10\n  carry = 10/10 = 1\n  dummy → 0 → 7 → 0\n\nStep 3: l1.val=3, l2.val=4\n  sum = 1 + 3 + 4 = 8\n  carry = 8/10 = 0\n  dummy → 0 → 7 → 0 → 8\n\nBoth lists null, carry=0 → done. Result: [7,0,8] = 807"
+    "exampleWalkthrough": "Let's trace Example 1: l1 = [2,4,3] (342), l2 = [5,6,4] (465)\n\nStart: dummy → 0, carry = 0\n\nStep 1: l1.val=2, l2.val=5\n  sum = 0 + 2 + 5 = 7\n  carry = 7/10 = 0\n  dummy → 0 → 7\n\nStep 2: l1.val=4, l2.val=6\n  sum = 0 + 4 + 6 = 10\n  carry = 10/10 = 1\n  dummy → 0 → 7 → 0\n\nStep 3: l1.val=3, l2.val=4\n  sum = 1 + 3 + 4 = 8\n  carry = 8/10 = 0\n  dummy → 0 → 7 → 0 → 8\n\nBoth lists null, carry=0 → done. Result: [7,0,8] = 807",
+    "language": "Java",
+    "source": "LeetCode",
+    "category": "Linked List",
+    "type": "algorithm",
+    "tags": [
+      "linked list"
+    ]
   },
   {
     "id": "longest-palindromic-substring",
@@ -62,7 +76,15 @@
     "explanation": "Expand around center approach. For each position i, treat it as the center of a palindrome and expand outward in both directions while characters match.\n\nTwo cases per center: odd-length (single center) and even-length (two-character center). Track the longest palindrome found.\n\nEach expansion is O(n) and there are O(n) centers, giving O(n²) total. No extra space needed beyond a few variables.",
     "timeComplexity": "O(n²)",
     "spaceComplexity": "O(1)",
-    "exampleWalkthrough": "Let's trace s = \"babad\"\n\ni=0, expand(0,0): 'b' alone → palindrome length 1. best = \"b\"\ni=0, expand(0,1): 'b' vs 'a' → no match. no update.\n\ni=1, expand(1,1): 'a' alone → length 1. no update.\ni=1, expand(1,2): 'a' vs 'b' → no match.\ni=1, expand(0,2): 'b' vs 'b' → match! expand further: left=-1 → stop.\n  palindrome = \"bab\", length 3. best = \"bab\"\n\ni=2, expand(2,2): 'b' alone → length 1.\ni=2, expand(2,3): 'b' vs 'a' → no match.\n\ni=3, expand(3,3): 'a' alone.\ni=3, expand(3,4): 'a' vs 'd' → no match.\n\ni=4, expand(4,4): 'd' alone.\n\nResult: \"bab\""
+    "exampleWalkthrough": "Let's trace s = \"babad\"\n\ni=0, expand(0,0): 'b' alone → palindrome length 1. best = \"b\"\ni=0, expand(0,1): 'b' vs 'a' → no match. no update.\n\ni=1, expand(1,1): 'a' alone → length 1. no update.\ni=1, expand(1,2): 'a' vs 'b' → no match.\ni=1, expand(0,2): 'b' vs 'b' → match! expand further: left=-1 → stop.\n  palindrome = \"bab\", length 3. best = \"bab\"\n\ni=2, expand(2,2): 'b' alone → length 1.\ni=2, expand(2,3): 'b' vs 'a' → no match.\n\ni=3, expand(3,3): 'a' alone.\ni=3, expand(3,4): 'a' vs 'd' → no match.\n\ni=4, expand(4,4): 'd' alone.\n\nResult: \"bab\"",
+    "language": "Java",
+    "source": "LeetCode",
+    "category": "1-D Dynamic Programming",
+    "type": "algorithm",
+    "tags": [
+      "string",
+      "palindrome"
+    ]
   },
   {
     "id": "regular-expression-matching",
@@ -87,7 +109,14 @@
     "explanation": "The core idea: matching strings is hard because '*' can expand or disappear. We break the problem into small pieces.\n\nImagine you're comparing s and p character by character. At any point you might have consumed some of s and some of p. The question is: \"given what I've consumed so far, is it still possible to match?\"\n\nWe record answers in a grid. Row i = consumed i chars of s. Column j = consumed j chars of p. So dp[i][j] means: \"if I take the first i chars of s and first j chars of p, do they match?\"\n\nHow to fill each cell:\n\nIf p's current char is a letter or '.': it must match s's current char directly. If it does, the answer is whatever the answer was one step back in both s and p (dp[i-1][j-1]). If it doesn't match, this path is dead → false.\n\nIf p's current char is '*': the letter before '*' (call it ch) is special. 'a*' means 'zero or more a's'. So we have two choices:\n  Choice 1 — Treat 'a*' as zero a's: pretend the 'a*' isn't there. The answer is dp[i][j-2]. We look 2 columns back because we're skipping both 'a' and '*'.\n  Choice 2 — Treat 'a*' as one or more a's: the current s char must be 'a' (or ch is '.'). If it matches, we consumed one char of s but the 'a*' is still there (it can repeat) → look at dp[i-1][j]. Same column because pattern position didn't move.\n  If either choice works → true.\n\nBase case: dp[0][0] = true (empty s matches empty p). Then dp[0][j] handles patterns like 'a*b*c*' that can match empty string by using zero of each pair.",
     "timeComplexity": "O(m*n)",
     "spaceComplexity": "O(m*n)",
-    "exampleWalkthrough": "s = \"aab\", p = \"c*a*b\"\n\nThe grid: rows = s chars (including empty), cols = p chars (including empty).\nWe fill row by row.\n\nRow 0 (empty s, varying p):\n- dp[0][0] = true (empty matches empty)\n- dp[0][1] = false (\"c\" can't match empty)\n- dp[0][2] = true (\"c*\" matches empty — zero c's)\n- dp[0][3] = false (\"c*a\" can't match empty)\n- dp[0][4] = true (\"c*a*\" matches empty — zero of both)\n- dp[0][5] = false (\"c*a*b\" can't match empty)\n\nRow 1 (s = \"a\"):\n- dp[1][1]: p='c'. 'a' vs 'c' → no match → false\n- dp[1][2]: p='*'. Ch='c'. Choice 1: skip c* → dp[1][0]=false. Choice 2: 'a' vs 'c' → no → false. Result: false\n- dp[1][3]: p='a'. 'a' vs 'a' → match → dp[0][2]=true → true\n- dp[1][4]: p='*'. Ch='a'. Choice 1: skip a* → dp[1][2]=false. Choice 2: 'a' vs 'a' → match → dp[0][4]=true → true\n- dp[1][5]: p='b'. 'a' vs 'b' → no → false\n\nRow 2 (s = \"aa\"):\n- dp[2][3]: p='a'. 'a' vs 'a' → dp[1][2]=false → false\n- dp[2][4]: p='*'. Ch='a'. Choice 1: skip a* → dp[2][2]=false. Choice 2: 'a' vs 'a' → dp[1][4]=true → true\n- dp[2][5]: p='b'. 'a' vs 'b' → false\n\nRow 3 (s = \"aab\"):\n- dp[3][5]: p='b'. 'b' vs 'b' → dp[2][4]=true → true ✓\n\ndp[3][5] = true → the full strings match."
+    "exampleWalkthrough": "s = \"aab\", p = \"c*a*b\"\n\nThe grid: rows = s chars (including empty), cols = p chars (including empty).\nWe fill row by row.\n\nRow 0 (empty s, varying p):\n- dp[0][0] = true (empty matches empty)\n- dp[0][1] = false (\"c\" can't match empty)\n- dp[0][2] = true (\"c*\" matches empty — zero c's)\n- dp[0][3] = false (\"c*a\" can't match empty)\n- dp[0][4] = true (\"c*a*\" matches empty — zero of both)\n- dp[0][5] = false (\"c*a*b\" can't match empty)\n\nRow 1 (s = \"a\"):\n- dp[1][1]: p='c'. 'a' vs 'c' → no match → false\n- dp[1][2]: p='*'. Ch='c'. Choice 1: skip c* → dp[1][0]=false. Choice 2: 'a' vs 'c' → no → false. Result: false\n- dp[1][3]: p='a'. 'a' vs 'a' → match → dp[0][2]=true → true\n- dp[1][4]: p='*'. Ch='a'. Choice 1: skip a* → dp[1][2]=false. Choice 2: 'a' vs 'a' → match → dp[0][4]=true → true\n- dp[1][5]: p='b'. 'a' vs 'b' → no → false\n\nRow 2 (s = \"aa\"):\n- dp[2][3]: p='a'. 'a' vs 'a' → dp[1][2]=false → false\n- dp[2][4]: p='*'. Ch='a'. Choice 1: skip a* → dp[2][2]=false. Choice 2: 'a' vs 'a' → dp[1][4]=true → true\n- dp[2][5]: p='b'. 'a' vs 'b' → false\n\nRow 3 (s = \"aab\"):\n- dp[3][5]: p='b'. 'b' vs 'b' → dp[2][4]=true → true ✓\n\ndp[3][5] = true → the full strings match.",
+    "language": "Java",
+    "source": "LeetCode",
+    "category": "2-D Dynamic Programming",
+    "type": "algorithm",
+    "tags": [
+      "dynamic programming"
+    ]
   },
   {
     "id": "container-with-most-water",
@@ -108,7 +137,15 @@
     "explanation": "Two pointers starting at both ends. The area is limited by the shorter line — making the taller line taller doesn't help.\n\nAt each step, compute the area with the current pair. Then move the pointer on the shorter side inward. Why? Because moving the taller side can only decrease width without any chance of increasing height (the bottleneck is the shorter line). Moving the shorter side is the only way to potentially find a taller line that compensates for the lost width.\n\nThe greedy choice is safe: we never miss a better answer by skipping the shorter line, because any container using it would be narrower and no taller.",
     "timeComplexity": "O(n)",
     "spaceComplexity": "O(1)",
-    "exampleWalkthrough": "height = [1,8,6,2,5,4,8,3,7]\n\nleft=0 (h=1), right=8 (h=7): area = min(1,7)*8 = 8. Move left (1<7).\nleft=1 (h=8), right=8 (h=7): area = min(8,7)*7 = 49. Move right (7<8).\nleft=1 (h=8), right=7 (h=3): area = min(8,3)*6 = 18. Move right (3<8).\nleft=1 (h=8), right=6 (h=8): area = min(8,8)*5 = 40. Move right (8==8).\nleft=1 (h=8), right=5 (h=4): area = min(8,4)*4 = 16. Move right (4<8).\nleft=1 (h=8), right=4 (h=5): area = min(8,5)*3 = 15. Move right (5<8).\nleft=1 (h=8), right=3 (h=2): area = min(8,2)*2 = 4. Move right (2<8).\nleft=1 (h=8), right=2 (h=6): area = min(8,6)*1 = 6. Move right (6<8).\n\nleft=1, right=2: left not < right? left=1, right=2 → left < right → true. One more:\nleft=1 (h=8), right=2 (h=6): area = 6. Move right.\n\nleft=1, right=1: loop ends.\n\nMaximum = 49."
+    "exampleWalkthrough": "height = [1,8,6,2,5,4,8,3,7]\n\nleft=0 (h=1), right=8 (h=7): area = min(1,7)*8 = 8. Move left (1<7).\nleft=1 (h=8), right=8 (h=7): area = min(8,7)*7 = 49. Move right (7<8).\nleft=1 (h=8), right=7 (h=3): area = min(8,3)*6 = 18. Move right (3<8).\nleft=1 (h=8), right=6 (h=8): area = min(8,8)*5 = 40. Move right (8==8).\nleft=1 (h=8), right=5 (h=4): area = min(8,4)*4 = 16. Move right (4<8).\nleft=1 (h=8), right=4 (h=5): area = min(8,5)*3 = 15. Move right (5<8).\nleft=1 (h=8), right=3 (h=2): area = min(8,2)*2 = 4. Move right (2<8).\nleft=1 (h=8), right=2 (h=6): area = min(8,6)*1 = 6. Move right (6<8).\n\nleft=1, right=2: left not < right? left=1, right=2 → left < right → true. One more:\nleft=1 (h=8), right=2 (h=6): area = 6. Move right.\n\nleft=1, right=1: loop ends.\n\nMaximum = 49.",
+    "language": "Java",
+    "source": "LeetCode",
+    "category": "Two Pointers",
+    "type": "algorithm",
+    "tags": [
+      "array",
+      "greedy"
+    ]
   },
   {
     "id": "integer-to-roman",
@@ -128,7 +165,14 @@
     "explanation": "Greedy approach. We have a list of all Roman numeral values in descending order, including the subtractive forms (4, 9, 40, 90, 400, 900).\n\nFor each value, we check: is num big enough? If yes, append that symbol and subtract the value. Repeat until num is too small, then move to the next smaller value.\n\nThis works because the values are in descending order, so we always use the largest possible symbol first. The subtractive forms are pre-built into the list, so we never need special logic for 4 or 9.",
     "timeComplexity": "O(1)",
     "spaceComplexity": "O(1)",
-    "exampleWalkthrough": "num = 1994\n\nvalues[] = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1}\n\n1994 >= 1000 → append \"M\", num = 994\n994 >= 900 → append \"CM\", num = 94\n94 >= 90 → append \"XC\", num = 4\n4 >= 4 → append \"IV\", num = 0\n\nResult: \"MCMXCIV\""
+    "exampleWalkthrough": "num = 1994\n\nvalues[] = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1}\n\n1994 >= 1000 → append \"M\", num = 994\n994 >= 900 → append \"CM\", num = 94\n94 >= 90 → append \"XC\", num = 4\n4 >= 4 → append \"IV\", num = 0\n\nResult: \"MCMXCIV\"",
+    "language": "Java",
+    "source": "LeetCode",
+    "category": "Math & Geometry",
+    "type": "algorithm",
+    "tags": [
+      "greedy"
+    ]
   },
   {
     "id": "3sum",
@@ -149,7 +193,15 @@
     "explanation": "Sort the array first. Then fix one element (nums[i]) and use two pointers to find pairs that sum to -nums[i].\n\nFor each i, set left = i+1 and right = end. If the total is too small, move left up. If too big, move right down. If it's zero, record the triplet and skip past any duplicates on both sides.\n\nSkip duplicate i values too — if nums[i] == nums[i-1], we already processed that number.\n\nEarly exit: if nums[i] > 0, no point continuing since all remaining numbers are also >= 0.",
     "timeComplexity": "O(n²)",
     "spaceComplexity": "O(1)",
-    "exampleWalkthrough": "nums = [-1,0,1,2,-1,-4]\nAfter sorting: [-4,-1,-1,0,1,2]\n\ni=0 (nums[i]=-4): need sum=4 from remaining. left=1 (-1), right=5 (2). -4+(-1)+2=-3 < 0 → left++. -4+0+2=-2 < 0 → left++. -4+1+2=-1 < 0 → left++. left >= right → done.\n\ni=1 (nums[i]=-1): need sum=1. left=2 (-1), right=5 (2). -1+(-1)+2=0 ✓ → add [-1,-1,2]. Skip dupes: left++, right--. left=3 (0), right=4 (1). -1+0+1=0 ✓ → add [-1,0,1]. left++, right--. left=4, right=3 → done.\n\ni=2 (nums[i]=-1): same as i=1 → skip (duplicate).\n\ni=3 (nums[i]=0): need sum=0. left=4 (1), right=5 (2). 0+1+2=3 > 0 → right--. left >= right → done.\n\nResult: [[-1,-1,2],[-1,0,1]]"
+    "exampleWalkthrough": "nums = [-1,0,1,2,-1,-4]\nAfter sorting: [-4,-1,-1,0,1,2]\n\ni=0 (nums[i]=-4): need sum=4 from remaining. left=1 (-1), right=5 (2). -4+(-1)+2=-3 < 0 → left++. -4+0+2=-2 < 0 → left++. -4+1+2=-1 < 0 → left++. left >= right → done.\n\ni=1 (nums[i]=-1): need sum=1. left=2 (-1), right=5 (2). -1+(-1)+2=0 ✓ → add [-1,-1,2]. Skip dupes: left++, right--. left=3 (0), right=4 (1). -1+0+1=0 ✓ → add [-1,0,1]. left++, right--. left=4, right=3 → done.\n\ni=2 (nums[i]=-1): same as i=1 → skip (duplicate).\n\ni=3 (nums[i]=0): need sum=0. left=4 (1), right=5 (2). 0+1+2=3 > 0 → right--. left >= right → done.\n\nResult: [[-1,-1,2],[-1,0,1]]",
+    "language": "Java",
+    "source": "LeetCode",
+    "category": "Two Pointers",
+    "type": "algorithm",
+    "tags": [
+      "array",
+      "sorting"
+    ]
   },
   {
     "id": "3sum-closest",
@@ -170,7 +222,15 @@
     "explanation": "Same two-pointer technique as 3Sum, but instead of looking for exactly zero, we track which sum is closest to target.\n\nSort the array. Fix one element, use two pointers for the other two. At each step, compute the sum and compare its distance from target to our current best. If we hit target exactly, return immediately.\n\nMove left up if sum is too small, right down if too big — same logic as before, just tracking closest instead of exact matches.",
     "timeComplexity": "O(n²)",
     "spaceComplexity": "O(1)",
-    "exampleWalkthrough": "nums = [-1,2,1,-4], target = 1\nAfter sorting: [-4,-1,1,2]\n\nclosest = -4+(-1)+1 = -4\n\ni=0 (nums[i]=-4): left=1 (-1), right=3 (2). sum=-4+(-1)+2=-3. |−3−1|=4 > |−4−1|=5? No → closest=-3. sum < target → left++. left=2 (1), right=3 (2). sum=-4+1+2=-1. |−1−1|=2 < |−3−1|=4 → closest=-1. sum < target → left++. left >= right → done.\n\ni=1 (nums[i]=-1): left=2 (1), right=3 (2). sum=-1+1+2=2. |2−1|=1 < |−1−1|=2 → closest=2. sum > target → right--. left >= right → done.\n\nResult: 2"
+    "exampleWalkthrough": "nums = [-1,2,1,-4], target = 1\nAfter sorting: [-4,-1,1,2]\n\nclosest = -4+(-1)+1 = -4\n\ni=0 (nums[i]=-4): left=1 (-1), right=3 (2). sum=-4+(-1)+2=-3. |−3−1|=4 > |−4−1|=5? No → closest=-3. sum < target → left++. left=2 (1), right=3 (2). sum=-4+1+2=-1. |−1−1|=2 < |−3−1|=4 → closest=-1. sum < target → left++. left >= right → done.\n\ni=1 (nums[i]=-1): left=2 (1), right=3 (2). sum=-1+1+2=2. |2−1|=1 < |−1−1|=2 → closest=2. sum > target → right--. left >= right → done.\n\nResult: 2",
+    "language": "Java",
+    "source": "LeetCode",
+    "category": "Two Pointers",
+    "type": "algorithm",
+    "tags": [
+      "array",
+      "sorting"
+    ]
   },
   {
     "id": "next-permutation",
@@ -191,7 +251,15 @@
     "explanation": "We want the smallest increase to make the number bigger.\n\nStep 1: Find the first pair from the right where nums[i] < nums[i+1]. This is the \"pivot\" — everything after it is non-increasing (already the biggest arrangement of those digits).\n\nStep 2: Find the smallest number to the right of i that is bigger than nums[i]. Swap them. Now the suffix is still non-increasing.\n\nStep 3: Reverse the suffix (everything after i). This gives us the smallest possible arrangement of those digits, which is what we want for the \"next\" permutation.\n\nIf no pivot exists (array is fully descending), the whole array reverses to become the smallest permutation.",
     "timeComplexity": "O(n)",
     "spaceComplexity": "O(1)",
-    "exampleWalkthrough": "nums = [1,3,5,4,2]\n\nStep 1: Find pivot. Scan from right:\n  2 vs 4: 2 < 4 → keep going\n  4 vs 5: 4 < 5 → keep going\n  5 vs 3: 5 > 3 → keep going\n  3 vs 1: 3 > 1 → keep going\nWait, we need nums[i] < nums[i+1]:\n  nums[3]=4, nums[4]=2: 4 > 2 → no\n  nums[2]=5, nums[3]=4: 5 > 4 → no\n  nums[1]=3, nums[2]=5: 3 < 5 → pivot at i=1\n\nStep 2: Find smallest num to right of i=1 that is > 3.\n  nums[4]=2: 2 <= 3 → skip\n  nums[3]=4: 4 > 3 → swap(1,3)\n  Array: [1,4,5,3,2]\n\nStep 3: Reverse from index 2 to end.\n  [1,4, | 5,3,2] → [1,4, | 2,3,5]\n\nResult: [1,4,2,3,5]"
+    "exampleWalkthrough": "nums = [1,3,5,4,2]\n\nStep 1: Find pivot. Scan from right:\n  2 vs 4: 2 < 4 → keep going\n  4 vs 5: 4 < 5 → keep going\n  5 vs 3: 5 > 3 → keep going\n  3 vs 1: 3 > 1 → keep going\nWait, we need nums[i] < nums[i+1]:\n  nums[3]=4, nums[4]=2: 4 > 2 → no\n  nums[2]=5, nums[3]=4: 5 > 4 → no\n  nums[1]=3, nums[2]=5: 3 < 5 → pivot at i=1\n\nStep 2: Find smallest num to right of i=1 that is > 3.\n  nums[4]=2: 2 <= 3 → skip\n  nums[3]=4: 4 > 3 → swap(1,3)\n  Array: [1,4,5,3,2]\n\nStep 3: Reverse from index 2 to end.\n  [1,4, | 5,3,2] → [1,4, | 2,3,5]\n\nResult: [1,4,2,3,5]",
+    "language": "Java",
+    "source": "LeetCode",
+    "category": "Arrays & Hashing",
+    "type": "algorithm",
+    "tags": [
+      "array",
+      "permutation"
+    ]
   },
   {
     "id": "combination-sum",
@@ -214,7 +282,14 @@
     "explanation": "Backtracking: try each candidate, and if it fits, keep it and try again from the same index (since we can reuse numbers). If it doesn't fit, move to the next.\n\nSort first so we can break early when a candidate is too large — no point checking bigger numbers.\n\nThe 'start' parameter prevents duplicates: we only consider candidates at index >= start, so we never go backwards and generate [2,3] and [3,2] separately.",
     "timeComplexity": "O(n^(t/m)) where n = candidates count, t = target, m = minimum value",
     "spaceComplexity": "O(t/m) for the recursion depth",
-    "exampleWalkthrough": "candidates = [2,3,6,7], target = 7\nSorted: [2,3,6,7]\n\nbacktrack(7, 0, [])\n  i=0: add 2 → backtrack(5, 0, [2])\n    i=0: add 2 → backtrack(3, 0, [2,2])\n      i=0: add 2 → backtrack(1, 0, [2,2,2])\n        i=0: 2 > 1 → break\n      i=1: add 3 → backtrack(0, 1, [2,2,3]) → remaining=0 → add [2,2,3]\n    i=1: add 3 → backtrack(2, 1, [2,3])\n      i=1: 3 > 2 → break\n    i=2: 6 > 5 → break\n  i=1: add 3 → backtrack(4, 1, [3])\n    i=1: add 3 → backtrack(1, 1, [3,3]) → 3 > 1 → break\n  i=2: 6 > 7? No → add 6 → backtrack(1, 2, [6]) → 6 > 1 → break\n  i=3: add 7 → backtrack(0, 3, [7]) → remaining=0 → add [7]\n\nResult: [[2,2,3],[7]]"
+    "exampleWalkthrough": "candidates = [2,3,6,7], target = 7\nSorted: [2,3,6,7]\n\nbacktrack(7, 0, [])\n  i=0: add 2 → backtrack(5, 0, [2])\n    i=0: add 2 → backtrack(3, 0, [2,2])\n      i=0: add 2 → backtrack(1, 0, [2,2,2])\n        i=0: 2 > 1 → break\n      i=1: add 3 → backtrack(0, 1, [2,2,3]) → remaining=0 → add [2,2,3]\n    i=1: add 3 → backtrack(2, 1, [2,3])\n      i=1: 3 > 2 → break\n    i=2: 6 > 5 → break\n  i=1: add 3 → backtrack(4, 1, [3])\n    i=1: add 3 → backtrack(1, 1, [3,3]) → 3 > 1 → break\n  i=2: 6 > 7? No → add 6 → backtrack(1, 2, [6]) → 6 > 1 → break\n  i=3: add 7 → backtrack(0, 3, [7]) → remaining=0 → add [7]\n\nResult: [[2,2,3],[7]]",
+    "language": "Java",
+    "source": "LeetCode",
+    "category": "Backtracking",
+    "type": "algorithm",
+    "tags": [
+      "backtracking"
+    ]
   },
   {
     "id": "permutations",
@@ -236,7 +311,14 @@
     "explanation": "Backtracking: build permutations one element at a time. Use a boolean[] to track which elements are already in the current permutation.\n\nAt each step, try every unused element. Add it, recurse, then remove it (backtrack). When the current permutation has all elements, record it.\n\nNo sorting needed since we try every element at every position.",
     "timeComplexity": "O(n * n!)",
     "spaceComplexity": "O(n) for recursion and used array",
-    "exampleWalkthrough": "nums = [1,2,3]\n\nbacktrack([], [F,F,F])\n  i=0: use 1 → backtrack([1], [T,F,F])\n    i=1: use 2 → backtrack([1,2], [T,T,F])\n      i=2: use 3 → backtrack([1,2,3], [T,T,T]) → add [1,2,3]\n    i=2: use 3 → backtrack([1,3], [T,F,T])\n      i=1: use 2 → backtrack([1,3,2], [T,T,T]) → add [1,3,2]\n  i=1: use 2 → backtrack([2], [F,T,F])\n    i=0: use 1 → backtrack([2,1], [T,T,F])\n      i=2: use 3 → backtrack([2,1,3], [T,T,T]) → add [2,1,3]\n    i=2: use 3 → backtrack([2,3], [F,T,T])\n      i=0: use 1 → backtrack([2,3,1], [T,T,T]) → add [2,3,1]\n  i=2: use 3 → backtrack([3], [F,F,T])\n    i=0: use 1 → backtrack([3,1], [T,F,T])\n      i=1: use 2 → backtrack([3,1,2], [T,T,T]) → add [3,1,2]\n    i=1: use 2 → backtrack([3,2], [F,T,T])\n      i=0: use 1 → backtrack([3,2,1], [T,T,T]) → add [3,2,1]\n\nResult: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]"
+    "exampleWalkthrough": "nums = [1,2,3]\n\nbacktrack([], [F,F,F])\n  i=0: use 1 → backtrack([1], [T,F,F])\n    i=1: use 2 → backtrack([1,2], [T,T,F])\n      i=2: use 3 → backtrack([1,2,3], [T,T,T]) → add [1,2,3]\n    i=2: use 3 → backtrack([1,3], [T,F,T])\n      i=1: use 2 → backtrack([1,3,2], [T,T,T]) → add [1,3,2]\n  i=1: use 2 → backtrack([2], [F,T,F])\n    i=0: use 1 → backtrack([2,1], [T,T,F])\n      i=2: use 3 → backtrack([2,1,3], [T,T,T]) → add [2,1,3]\n    i=2: use 3 → backtrack([2,3], [F,T,T])\n      i=0: use 1 → backtrack([2,3,1], [T,T,T]) → add [2,3,1]\n  i=2: use 3 → backtrack([3], [F,F,T])\n    i=0: use 1 → backtrack([3,1], [T,F,T])\n      i=1: use 2 → backtrack([3,1,2], [T,T,T]) → add [3,1,2]\n    i=1: use 2 → backtrack([3,2], [F,T,T])\n      i=0: use 1 → backtrack([3,2,1], [T,T,T]) → add [3,2,1]\n\nResult: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]",
+    "language": "Java",
+    "source": "LeetCode",
+    "category": "Backtracking",
+    "type": "algorithm",
+    "tags": [
+      "backtracking"
+    ]
   },
   {
     "id": "spiral-matrix",
@@ -258,7 +340,14 @@
     "explanation": "Four boundaries: top, bottom, left, right. Peel the matrix layer by layer in a spiral.\n\nGo right across the top row, then down the right column, then left across the bottom row, then up the left column. After each pass, shrink the corresponding boundary inward.\n\nThe if-checks before bottom and left passes handle the case where we've run out of rows or columns — without them we'd double-count elements.",
     "timeComplexity": "O(m*n)",
     "spaceComplexity": "O(1) excluding output",
-    "exampleWalkthrough": "matrix = [[1,2,3],[4,5,6],[7,8,9]]\nboundaries: top=0, bottom=2, left=0, right=2\n\nPass 1:\n  Right across top row: 1,2,3 → top=1\n  Down right column: 6,9 → right=1\n  Left across bottom row: 8,7 → bottom=1\n  Up left column: 4 → left=1\n\nPass 2 (top=1, bottom=1, left=1, right=1):\n  Right across top row: 5 → top=2\n  Down right column: (top=2 > bottom=1) → nothing → right=0\n  bottom check: top=2 > bottom=1 → skip\n  left check: left=1 > right=0 → skip\n\nResult: [1,2,3,6,9,8,7,4,5]"
+    "exampleWalkthrough": "matrix = [[1,2,3],[4,5,6],[7,8,9]]\nboundaries: top=0, bottom=2, left=0, right=2\n\nPass 1:\n  Right across top row: 1,2,3 → top=1\n  Down right column: 6,9 → right=1\n  Left across bottom row: 8,7 → bottom=1\n  Up left column: 4 → left=1\n\nPass 2 (top=1, bottom=1, left=1, right=1):\n  Right across top row: 5 → top=2\n  Down right column: (top=2 > bottom=1) → nothing → right=0\n  bottom check: top=2 > bottom=1 → skip\n  left check: left=1 > right=0 → skip\n\nResult: [1,2,3,6,9,8,7,4,5]",
+    "language": "Java",
+    "source": "LeetCode",
+    "category": "Math & Geometry",
+    "type": "algorithm",
+    "tags": [
+      "matrix"
+    ]
   },
   {
     "id": "lru-cache",
@@ -279,7 +368,15 @@
     "explanation": "Java's LinkedHashMap with accessOrder=true automatically moves accessed entries to the end. The least recently used entry is always at the beginning.\n\nOn put, if we exceed capacity, remove the first entry (oldest). That's it — LinkedHashMap handles all the reordering internally.\n\nBoth get and put are O(1) on average.",
     "timeComplexity": "O(1) average for get and put",
     "spaceComplexity": "O(capacity)",
-    "exampleWalkthrough": "capacity = 2\n\nput(1,1): cache = {1=1}\nput(2,2): cache = {1=1, 2=2}\nget(1): returns 1, cache = {2=2, 1=1} (1 moved to end)\nput(3,3): cache full, evict LRU (2), cache = {1=1, 3=3}\nget(2): returns -1 (evicted)\nput(4,4): cache full, evict LRU (1), cache = {3=3, 4=4}\nget(1): returns -1 (evicted)\nget(3): returns 3, cache = {4=4, 3=3}\nget(4): returns 4, cache = {3=3, 4=4}"
+    "exampleWalkthrough": "capacity = 2\n\nput(1,1): cache = {1=1}\nput(2,2): cache = {1=1, 2=2}\nget(1): returns 1, cache = {2=2, 1=1} (1 moved to end)\nput(3,3): cache full, evict LRU (2), cache = {1=1, 3=3}\nget(2): returns -1 (evicted)\nput(4,4): cache full, evict LRU (1), cache = {3=3, 4=4}\nget(1): returns -1 (evicted)\nget(3): returns 3, cache = {4=4, 3=3}\nget(4): returns 4, cache = {3=3, 4=4}",
+    "language": "Java",
+    "source": "LeetCode",
+    "category": "Linked List",
+    "type": "algorithm",
+    "tags": [
+      "linked list",
+      "hash map"
+    ]
   },
   {
     "id": "lru-cache-manual",
@@ -300,7 +397,15 @@
     "explanation": "Doubly-linked list + HashMap. The list maintains order: head = least recently used, tail = most recently used.\n\nHashMap maps key → node for O(1) lookup. On get/put, move the node to the tail (most recent). On eviction, remove from head (least recent).\n\nDummy head and tail nodes eliminate edge cases for empty list operations.",
     "timeComplexity": "O(1) average for get and put",
     "spaceComplexity": "O(capacity)",
-    "exampleWalkthrough": "capacity = 2. List: head <-> tail, map: {}\n\nput(1,1): add node(1,1) to tail. List: head <-> (1) <-> tail. map: {1→(1)}\nput(2,2): add node(2,2) to tail. List: head <-> (1) <-> (2) <-> tail. map: {1→(1), 2→(2)}\nget(1): found! move (1) to tail. List: head <-> (2) <-> (1) <-> tail. return 1\nput(3,3): add (3) to tail. size=3 > capacity → remove head.next=(2). map: {1→(1), 3→(3)}\n  List: head <-> (1) <-> (3) <-> tail\nget(2): not in map → return -1\nput(4,4): add (4) to tail. evict (1). map: {3→(3), 4→(4)}\n  List: head <-> (3) <-> (4) <-> tail\nget(1): not in map → return -1\nget(3): found, move to tail. return 3\nget(4): found, move to tail. return 4"
+    "exampleWalkthrough": "capacity = 2. List: head <-> tail, map: {}\n\nput(1,1): add node(1,1) to tail. List: head <-> (1) <-> tail. map: {1→(1)}\nput(2,2): add node(2,2) to tail. List: head <-> (1) <-> (2) <-> tail. map: {1→(1), 2→(2)}\nget(1): found! move (1) to tail. List: head <-> (2) <-> (1) <-> tail. return 1\nput(3,3): add (3) to tail. size=3 > capacity → remove head.next=(2). map: {1→(1), 3→(3)}\n  List: head <-> (1) <-> (3) <-> tail\nget(2): not in map → return -1\nput(4,4): add (4) to tail. evict (1). map: {3→(3), 4→(4)}\n  List: head <-> (3) <-> (4) <-> tail\nget(1): not in map → return -1\nget(3): found, move to tail. return 3\nget(4): found, move to tail. return 4",
+    "language": "Java",
+    "source": "LeetCode",
+    "category": "Linked List",
+    "type": "algorithm",
+    "tags": [
+      "linked list",
+      "hash map"
+    ]
   },
   {
     "id": "lfu-cache",
@@ -321,7 +426,15 @@
     "explanation": "Two maps: keyToNode for O(1) key lookup, and freqToKeys which groups nodes by frequency. Each frequency bucket is a LinkedHashMap (insertion order = recency).\n\nOn get/put, move the node from its current frequency bucket to the next one. Track minFreq — when a bucket empties, increment it.\n\nOn eviction, remove the first entry from the smallest frequency bucket (least frequent). LinkedHashMap's insertion order handles the LRU tiebreaker.",
     "timeComplexity": "O(1) average for get and put",
     "spaceComplexity": "O(capacity)",
-    "exampleWalkthrough": "capacity = 2\n\nput(1,1): node(1,1,freq=1). freq=1: {1}. minFreq=1\nput(2,2): node(2,2,freq=1). freq=1: {1,2}. minFreq=1\nget(1): node(1), update: freq1→freq2. freq=1: {2}, freq=2: {1}. minFreq=2\nput(3,3): full! evict from freq1: key 2. freq=1: {}. Add node(3,3,freq=1). freq=1: {3}, freq=2: {1}. minFreq=1\nget(2): not in map → -1\nget(3): node(3), update: freq1→freq2. freq=1: {}, freq=2: {1,3}. minFreq=2\nput(4,4): full! evict from freq2: key 1 (LRU in freq2). freq=2: {3}. Add node(4,4,freq=1). freq=1: {4}, freq=2: {3}. minFreq=1\nget(1): not in map → -1\nget(3): node(3), update: freq2→freq3. freq=2: {}, freq=3: {3}. minFreq=3\nget(4): node(4), update: freq1→freq2. freq=1: {}, freq=2: {4}, freq=3: {3}. minFreq=2"
+    "exampleWalkthrough": "capacity = 2\n\nput(1,1): node(1,1,freq=1). freq=1: {1}. minFreq=1\nput(2,2): node(2,2,freq=1). freq=1: {1,2}. minFreq=1\nget(1): node(1), update: freq1→freq2. freq=1: {2}, freq=2: {1}. minFreq=2\nput(3,3): full! evict from freq1: key 2. freq=1: {}. Add node(3,3,freq=1). freq=1: {3}, freq=2: {1}. minFreq=1\nget(2): not in map → -1\nget(3): node(3), update: freq1→freq2. freq=1: {}, freq=2: {1,3}. minFreq=2\nput(4,4): full! evict from freq2: key 1 (LRU in freq2). freq=2: {3}. Add node(4,4,freq=1). freq=1: {4}, freq=2: {3}. minFreq=1\nget(1): not in map → -1\nget(3): node(3), update: freq2→freq3. freq=2: {}, freq=3: {3}. minFreq=3\nget(4): node(4), update: freq1→freq2. freq=1: {}, freq=2: {4}, freq=3: {3}. minFreq=2",
+    "language": "Java",
+    "source": "LeetCode",
+    "category": "Heap / Priority Queue",
+    "type": "algorithm",
+    "tags": [
+      "heap",
+      "hash map"
+    ]
   },
   {
     "id": "reverse-linked-list",
@@ -342,7 +455,14 @@
     "explanation": "Walk through the list with two pointers: prev and curr. At each step, save the next node, point curr's next backwards to prev, then move both pointers forward.\n\nWhen curr becomes null, prev is at the new head (the old last node).",
     "timeComplexity": "O(n)",
     "spaceComplexity": "O(1)",
-    "exampleWalkthrough": "head = [1,2,3,4,5]\n\nStep 1: prev=null, curr=1. next=2. 1.next=null. prev=1, curr=2.\n  List: null<-1  2->3->4->5\n\nStep 2: prev=1, curr=2. next=3. 2.next=1. prev=2, curr=3.\n  List: null<-1<-2  3->4->5\n\nStep 3: prev=2, curr=3. next=4. 3.next=2. prev=3, curr=4.\n  List: null<-1<-2<-3  4->5\n\nStep 4: prev=3, curr=4. next=5. 4.next=3. prev=4, curr=5.\n  List: null<-1<-2<-3<-4  5\n\nStep 5: prev=4, curr=5. next=null. 5.next=4. prev=5, curr=null.\n  List: null<-1<-2<-3<-4<-5\n\ncurr=null → return prev=5.\nResult: [5,4,3,2,1]"
+    "exampleWalkthrough": "head = [1,2,3,4,5]\n\nStep 1: prev=null, curr=1. next=2. 1.next=null. prev=1, curr=2.\n  List: null<-1  2->3->4->5\n\nStep 2: prev=1, curr=2. next=3. 2.next=1. prev=2, curr=3.\n  List: null<-1<-2  3->4->5\n\nStep 3: prev=2, curr=3. next=4. 3.next=2. prev=3, curr=4.\n  List: null<-1<-2<-3  4->5\n\nStep 4: prev=3, curr=4. next=5. 4.next=3. prev=4, curr=5.\n  List: null<-1<-2<-3<-4  5\n\nStep 5: prev=4, curr=5. next=null. 5.next=4. prev=5, curr=null.\n  List: null<-1<-2<-3<-4<-5\n\ncurr=null → return prev=5.\nResult: [5,4,3,2,1]",
+    "language": "Java",
+    "source": "LeetCode",
+    "category": "Linked List",
+    "type": "algorithm",
+    "tags": [
+      "linked list"
+    ]
   },
   {
     "id": "lowest-common-ancestor-of-a-bst",
@@ -365,7 +485,14 @@
     "explanation": "BST property: left < root < right. If both p and q are smaller than root, LCA must be in the left subtree. If both are larger, LCA is in the right subtree. Otherwise, this node is the split point — one child is on each side, or one of them is this node itself.",
     "timeComplexity": "O(h) where h is the tree height",
     "spaceComplexity": "O(1)",
-    "exampleWalkthrough": "Tree:        6\n           / \\\n          2   8\n         / \\ / \\\n        0  4 7  9\n          / \\\n         3   5\n\np=2, q=8:\n  curr=6: 2<6 and 8>6 → split → return 6\n\np=2, q=4:\n  curr=6: 2<6 and 4<6 → go left\n  curr=2: 2==2 and 4>2 → split → return 2"
+    "exampleWalkthrough": "Tree:        6\n           / \\\n          2   8\n         / \\ / \\\n        0  4 7  9\n          / \\\n         3   5\n\np=2, q=8:\n  curr=6: 2<6 and 8>6 → split → return 6\n\np=2, q=4:\n  curr=6: 2<6 and 4<6 → go left\n  curr=2: 2==2 and 4>2 → split → return 2",
+    "language": "Java",
+    "source": "LeetCode",
+    "category": "Trees",
+    "type": "algorithm",
+    "tags": [
+      "tree"
+    ]
   },
   {
     "id": "coin-change",
@@ -387,7 +514,14 @@
     "explanation": "Bottom-up DP. dp[i] = fewest coins to make amount i.\n\nStart with dp[0] = 0 (zero coins for zero amount). For each amount from 1 to target, try every coin: if the coin fits (coin <= i), the answer is min of current value or dp[i-coin] + 1.\n\nThe +1 is the coin we're using. We look at dp[i-coin] because that tells us the best way to make the remaining amount.\n\nFill dp with amount+1 initially (an impossible value) so we can detect when no combination works.",
     "timeComplexity": "O(amount * coins.length)",
     "spaceComplexity": "O(amount)",
-    "exampleWalkthrough": "coins = [1,2,5], amount = 11\ndp[0] = 0, dp[1..11] = 12 (impossible)\n\ni=1: coin=1 → dp[1] = min(12, dp[0]+1) = 1\ni=2: coin=1 → dp[2] = min(12, dp[1]+1) = 2. coin=2 → dp[2] = min(2, dp[0]+1) = 1\ni=3: coin=1 → dp[3] = min(12, dp[2]+1) = 2. coin=2 → dp[3] = min(2, dp[1]+1) = 2\ni=4: coin=2 → dp[4] = min(12, dp[2]+1) = 2. coin=1 → already 2.\ni=5: coin=5 → dp[5] = min(12, dp[0]+1) = 1\ni=6: coin=1 → dp[6] = min(12, dp[5]+1) = 2\ni=7: coin=2 → dp[7] = min(12, dp[5]+1) = 2\ni=8: coin=1 → dp[8] = min(12, dp[7]+1) = 3\ni=9: coin=2 → dp[9] = min(12, dp[7]+1) = 3\ni=10: coin=5 → dp[10] = min(12, dp[5]+1) = 2\ni=11: coin=1 → dp[11] = min(12, dp[10]+1) = 3\n\nResult: 3"
+    "exampleWalkthrough": "coins = [1,2,5], amount = 11\ndp[0] = 0, dp[1..11] = 12 (impossible)\n\ni=1: coin=1 → dp[1] = min(12, dp[0]+1) = 1\ni=2: coin=1 → dp[2] = min(12, dp[1]+1) = 2. coin=2 → dp[2] = min(2, dp[0]+1) = 1\ni=3: coin=1 → dp[3] = min(12, dp[2]+1) = 2. coin=2 → dp[3] = min(2, dp[1]+1) = 2\ni=4: coin=2 → dp[4] = min(12, dp[2]+1) = 2. coin=1 → already 2.\ni=5: coin=5 → dp[5] = min(12, dp[0]+1) = 1\ni=6: coin=1 → dp[6] = min(12, dp[5]+1) = 2\ni=7: coin=2 → dp[7] = min(12, dp[5]+1) = 2\ni=8: coin=1 → dp[8] = min(12, dp[7]+1) = 3\ni=9: coin=2 → dp[9] = min(12, dp[7]+1) = 3\ni=10: coin=5 → dp[10] = min(12, dp[5]+1) = 2\ni=11: coin=1 → dp[11] = min(12, dp[10]+1) = 3\n\nResult: 3",
+    "language": "Java",
+    "source": "LeetCode",
+    "category": "1-D Dynamic Programming",
+    "type": "algorithm",
+    "tags": [
+      "dynamic programming"
+    ]
   },
   {
     "id": "invert-binary-tree",
@@ -408,6 +542,700 @@
     "explanation": "Recursive: swap left and right children, then recurse on both. Base case: null node returns null.\n\nThe swap is done by storing left in a temp variable, assigning right to left, then temp to right. After swapping, both children need to be inverted too.",
     "timeComplexity": "O(n) — visit every node once",
     "spaceComplexity": "O(h) — recursion depth equals tree height",
-    "exampleWalkthrough": "root = [4,2,7,1,3,6,9]\n\ninvertTree(4):\n  swap left(2) and right(7) → now [4,7,2,...]\n  invertTree(7):\n    swap left(6) and right(9) → [7,9,6]\n    invertTree(9): null → return null\n    invertTree(6): null → return null\n  invertTree(2):\n    swap left(1) and right(3) → [2,3,1]\n    invertTree(3): null → return null\n    invertTree(1): null → return null\n\nResult: [4,7,2,9,6,3,1]"
+    "exampleWalkthrough": "root = [4,2,7,1,3,6,9]\n\ninvertTree(4):\n  swap left(2) and right(7) → now [4,7,2,...]\n  invertTree(7):\n    swap left(6) and right(9) → [7,9,6]\n    invertTree(9): null → return null\n    invertTree(6): null → return null\n  invertTree(2):\n    swap left(1) and right(3) → [2,3,1]\n    invertTree(3): null → return null\n    invertTree(1): null → return null\n\nResult: [4,7,2,9,6,3,1]",
+    "language": "Java",
+    "source": "LeetCode",
+    "category": "Trees",
+    "type": "algorithm",
+    "tags": [
+      "tree"
+    ]
+  },
+  {
+    "id": "sql-basic-sum",
+    "name": "SQL Basic Sum",
+    "number": null,
+    "difficulty": "Easy",
+    "language": "SQL",
+    "source": "Coderbyte",
+    "category": "Database & SQL",
+    "type": "SQL practice",
+    "backendSkill": "Filtering and aggregation",
+    "tags": [
+      "SQL",
+      "MySQL",
+      "aggregation",
+      "WHERE",
+      "SUM"
+    ],
+    "description": "Return each matching LastName and the sum of Age for users whose LastName is Smith. This is a SQL practice entry, not a Java implementation.",
+    "schema": {
+      "table": "maintable_XXXX",
+      "columns": [
+        "LastName VARCHAR(50)",
+        "Age INT"
+      ],
+      "note": "Coderbyte supplies the real maintable suffix in the challenge environment; replace XXXX with that suffix."
+    },
+    "examples": [
+      "Input rows: (Smith, 22), (Smith, 25), (Jones, 31)\nOutput: LastName = Smith, SumAge = 47"
+    ],
+    "constraints": [
+      "MySQL 5.5-compatible syntax",
+      "Use the table name supplied by the challenge environment",
+      "Only rows with LastName = 'Smith' contribute to the sum"
+    ],
+    "solutionCode": "SELECT LastName,\n       SUM(Age) AS SumAge\nFROM maintable_XXXX\nWHERE LastName = 'Smith';",
+    "explanation": "Filter the table to Smith rows before aggregating. SUM(Age) adds the ages, and the alias SumAge gives the result the requested column name. The query keeps the challenge's schema placeholder visible so the table suffix can be replaced safely.",
+    "timeComplexity": "Depends on the database query plan",
+    "spaceComplexity": "Depends on the database query plan",
+    "exampleWalkthrough": "The WHERE clause removes Jones before SUM runs. The two remaining Smith rows contribute 22 + 25, producing SumAge = 47."
+  },
+  {
+    "id": "sql-contains-letter",
+    "name": "SQL Contains Letter",
+    "number": null,
+    "difficulty": "Medium",
+    "language": "SQL",
+    "source": "Coderbyte",
+    "category": "Database & SQL",
+    "type": "SQL practice",
+    "backendSkill": "String filtering and row counting",
+    "tags": [
+      "SQL",
+      "MySQL",
+      "LIKE",
+      "LENGTH",
+      "COUNT"
+    ],
+    "description": "Return the number of rows where FirstName contains the letter e and LastName has more than five characters. This is a SQL practice entry, not a Java implementation.",
+    "schema": {
+      "table": "maintable_XXXX",
+      "columns": [
+        "FirstName VARCHAR(50)",
+        "LastName VARCHAR(50)"
+      ],
+      "note": "Coderbyte supplies the real maintable suffix in the challenge environment; replace XXXX with that suffix."
+    },
+    "examples": [
+      "Input rows: (Steve, Johnson), (Amy, Williams), (Bob, Li)\nMatching rows: Steve Johnson\nOutput: 1"
+    ],
+    "constraints": [
+      "MySQL 5.5-compatible syntax",
+      "The letter check uses a substring match for e",
+      "LastName must contain more than 5 characters"
+    ],
+    "solutionCode": "SELECT COUNT(*)\nFROM maintable_XXXX\nWHERE FirstName LIKE '%e%'\n  AND LENGTH(LastName) > 5;",
+    "explanation": "LIKE '%e%' matches an e anywhere in FirstName. LENGTH(LastName) > 5 applies the second condition, and COUNT(*) returns the number of rows satisfying both predicates.",
+    "timeComplexity": "Depends on the database query plan",
+    "spaceComplexity": "Depends on the database query plan",
+    "exampleWalkthrough": "Steve contains e and Johnson has 7 characters, so the row matches. Amy has no e, so it does not match despite Williams being long. Bob has no e and Li is too short. The count is 1 for this exact sample."
+  },
+  {
+    "id": "sql-member-count",
+    "name": "SQL Member Count",
+    "number": null,
+    "difficulty": "Medium",
+    "language": "SQL",
+    "source": "Coderbyte",
+    "category": "Database & SQL",
+    "type": "SQL practice",
+    "backendSkill": "GROUP BY aggregation and reporting",
+    "tags": [
+      "SQL",
+      "MySQL",
+      "GROUP BY",
+      "COUNT",
+      "AVG",
+      "ORDER BY"
+    ],
+    "description": "For every non-null ReportsTo value, return the manager name, the number of members reporting to that manager, and the average age of those members as an integer. Order the result alphabetically by ReportsTo.",
+    "schema": {
+      "table": "maintable_XXXX",
+      "columns": [
+        "ID INT",
+        "FirstName VARCHAR(50)",
+        "LastName VARCHAR(50)",
+        "ReportsTo VARCHAR(100)",
+        "Position VARCHAR(50)",
+        "Age INT"
+      ],
+      "note": "Coderbyte supplies the real maintable suffix in the challenge environment; replace XXXX with that suffix."
+    },
+    "examples": [
+      "Input rows: (Daniel Smith, Bob Boss, 25), (Mike White, Bob Boss, 22), (Robert Black, Daniel Smith, 22)\nOutput rows: Bob Boss | 2 | 24; Daniel Smith | 1 | 22"
+    ],
+    "constraints": [
+      "MySQL 5.5-compatible syntax",
+      "Exclude rows where ReportsTo is NULL",
+      "Group by ReportsTo and order names alphabetically",
+      "Return the average age as an integer"
+    ],
+    "solutionCode": "SELECT ReportsTo,\n       COUNT(ReportsTo) AS Members,\n       ROUND(AVG(Age)) AS `Average Age`\nFROM maintable_XXXX\nWHERE ReportsTo IS NOT NULL\nGROUP BY ReportsTo\nORDER BY ReportsTo;",
+    "explanation": "Remove top-level employees with WHERE ReportsTo IS NOT NULL, then group the remaining employees by manager. COUNT gives each manager's member total, ROUND(AVG(Age)) produces the requested integer average, and ORDER BY makes the output deterministic and alphabetical.",
+    "timeComplexity": "Depends on the database query plan",
+    "spaceComplexity": "Depends on the database query plan",
+    "exampleWalkthrough": "Bob Boss has two direct reports aged 25 and 22, so Members = 2 and Average Age = ROUND(23.5) = 24. Daniel Smith has one direct report aged 22, so Members = 1 and Average Age = 22."
+  },
+  {
+    "id": "find-intersection",
+    "name": "Find Intersection",
+    "number": null,
+    "difficulty": "Easy",
+    "language": "Java",
+    "source": "Coderbyte",
+    "category": "Arrays & Hashing",
+    "type": "algorithm",
+    "backendSkill": null,
+    "tags": [
+      "array",
+      "hash set"
+    ],
+    "description": "Return common values of two comma-separated sorted integer lists.",
+    "examples": [
+      "Input: [\"1, 3, 4, 7, 13\", \"1, 2, 4, 13, 15\"]\nOutput: \"1,4,13\""
+    ],
+    "constraints": [
+      "Follow the stated input format",
+      "Return the required result"
+    ],
+    "solutionCode": "class Solution { public String findIntersection(String[] a) { Set<String> s=new HashSet<>(Arrays.asList(a[1].split(\", \"))); List<String> r=new ArrayList<>(); for(String v:a[0].split(\", \")) if(s.contains(v)) r.add(v); return String.join(\",\",r); } }",
+    "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
+    "timeComplexity": "See algorithm",
+    "spaceComplexity": "See algorithm",
+    "exampleWalkthrough": "Process the example one step at a time and return the stated output."
+  },
+  {
+    "id": "nonrepeating-character",
+    "name": "Nonrepeating Character",
+    "number": null,
+    "difficulty": "Easy",
+    "language": "Java",
+    "source": "Coderbyte",
+    "category": "Arrays & Hashing",
+    "type": "algorithm",
+    "backendSkill": null,
+    "tags": [
+      "string",
+      "frequency count"
+    ],
+    "description": "Return the first character that occurs exactly once.",
+    "examples": [
+      "Input: \"agettkgaeee\"\nOutput: \"k\""
+    ],
+    "constraints": [
+      "Follow the stated input format",
+      "Return the required result"
+    ],
+    "solutionCode": "class Solution { public Character nonrepeatingCharacter(String s) { Map<Character,Integer> m=new HashMap<>(); for(char c:s.toCharArray()) m.put(c,m.getOrDefault(c,0)+1); for(char c:s.toCharArray()) if(m.get(c)==1)return c; return null; } }",
+    "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
+    "timeComplexity": "See algorithm",
+    "spaceComplexity": "See algorithm",
+    "exampleWalkthrough": "Process the example one step at a time and return the stated output."
+  },
+  {
+    "id": "array-addition-i",
+    "name": "Array Addition I",
+    "number": null,
+    "difficulty": "Medium",
+    "language": "Java",
+    "source": "Coderbyte",
+    "category": "Backtracking",
+    "type": "algorithm",
+    "backendSkill": null,
+    "tags": [
+      "subset sum",
+      "backtracking"
+    ],
+    "description": "Return true when a subset excluding the largest value adds to that largest value.",
+    "examples": [
+      "Input: [4, 6, 23, 10, 1, 3]\nOutput: true"
+    ],
+    "constraints": [
+      "Follow the stated input format",
+      "Return the required result"
+    ],
+    "solutionCode": "class Solution { public boolean arrayAddition(int[] a) { Arrays.sort(a); return go(a,a.length-2,a[a.length-1]); } private boolean go(int[] a,int i,int r) { if(r==0)return true; if(i<0||r<0)return false; return go(a,i-1,r-a[i])||go(a,i-1,r); } }",
+    "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
+    "timeComplexity": "See algorithm",
+    "spaceComplexity": "See algorithm",
+    "exampleWalkthrough": "Process the example one step at a time and return the stated output."
+  },
+  {
+    "id": "longest-word",
+    "name": "Longest Word",
+    "number": null,
+    "difficulty": "Easy",
+    "language": "Java",
+    "source": "Coderbyte",
+    "category": "Arrays & Hashing",
+    "type": "algorithm",
+    "backendSkill": null,
+    "tags": [
+      "string",
+      "parsing"
+    ],
+    "description": "Return the longest word, ignoring punctuation; keep the first word on a tie.",
+    "examples": [
+      "Input: \"fun&!! time\"\nOutput: \"time\""
+    ],
+    "constraints": [
+      "Follow the stated input format",
+      "Return the required result"
+    ],
+    "solutionCode": "class Solution { public String longestWord(String s) { String best=\"\"; for(String w:s.replaceAll(\"[^A-Za-z0-9 ]\",\" \").trim().split(\"\\\\s+\")) if(w.length()>best.length())best=w; return best; } }",
+    "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
+    "timeComplexity": "See algorithm",
+    "spaceComplexity": "See algorithm",
+    "exampleWalkthrough": "Process the example one step at a time and return the stated output."
+  },
+  {
+    "id": "bracket-matcher",
+    "name": "Bracket Matcher",
+    "number": null,
+    "difficulty": "Easy",
+    "language": "Java",
+    "source": "Coderbyte",
+    "category": "Stack",
+    "type": "algorithm",
+    "backendSkill": null,
+    "tags": [
+      "stack",
+      "validation"
+    ],
+    "description": "Determine whether parentheses are balanced and correctly ordered.",
+    "examples": [
+      "Input: \"(hello (world))\"\nOutput: true"
+    ],
+    "constraints": [
+      "Follow the stated input format",
+      "Return the required result"
+    ],
+    "solutionCode": "class Solution { public boolean bracketMatcher(String s) { int n=0; for(char c:s.toCharArray()){if(c=='(')n++;if(c==')'&&--n<0)return false;}return n==0;} }",
+    "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
+    "timeComplexity": "See algorithm",
+    "spaceComplexity": "See algorithm",
+    "exampleWalkthrough": "Process the example one step at a time and return the stated output."
+  },
+  {
+    "id": "min-window-substring",
+    "name": "Min Window Substring",
+    "number": null,
+    "difficulty": "Hard",
+    "language": "Java",
+    "source": "Coderbyte",
+    "category": "Sliding Window",
+    "type": "algorithm",
+    "backendSkill": null,
+    "tags": [
+      "sliding window",
+      "frequency count"
+    ],
+    "description": "Find the shortest substring of N containing every character of K.",
+    "examples": [
+      "Input: N=\"aaabaaddae\", K=\"aed\"\nOutput: \"dae\""
+    ],
+    "constraints": [
+      "Follow the stated input format",
+      "Return the required result"
+    ],
+    "solutionCode": "class Solution { public String minWindow(String n,String k){int[]z=new int[128];for(char c:k.toCharArray())z[c]++;int miss=k.length(),l=0,st=0,len=Integer.MAX_VALUE;for(int r=0;r<n.length();r++){if(z[n.charAt(r)]-->0)miss--;while(miss==0){if(r-l+1<len){st=l;len=r-l+1;}if(++z[n.charAt(l++)]>0)miss++;}}return len==Integer.MAX_VALUE?\"\":n.substring(st,st+len);} }",
+    "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
+    "timeComplexity": "See algorithm",
+    "spaceComplexity": "See algorithm",
+    "exampleWalkthrough": "Process the example one step at a time and return the stated output."
+  },
+  {
+    "id": "tree-constructor",
+    "name": "Tree Constructor",
+    "number": null,
+    "difficulty": "Medium",
+    "language": "Java",
+    "source": "Coderbyte",
+    "category": "Trees",
+    "type": "algorithm",
+    "backendSkill": null,
+    "tags": [
+      "tree",
+      "validation"
+    ],
+    "description": "Determine whether (child,parent) pairs form a valid binary tree.",
+    "examples": [
+      "Input: [\"(1,2)\",\"(2,4)\",\"(5,7)\",\"(7,2)\",\"(9,5)\"]\nOutput: true"
+    ],
+    "constraints": [
+      "Follow the stated input format",
+      "Return the required result"
+    ],
+    "solutionCode": "class Solution { public boolean treeConstructor(String[] a){Map<Integer,Integer>p=new HashMap<>(),c=new HashMap<>();Set<Integer>n=new HashSet<>();for(String x:a){String[]v=x.substring(1,x.length()-1).split(\",\");int ch=Integer.parseInt(v[0]),pa=Integer.parseInt(v[1]);n.add(ch);n.add(pa);if(p.put(ch,pa)!=null||c.merge(pa,1,Integer::sum)>2)return false;}int roots=0;for(int x:n)if(!p.containsKey(x))roots++;if(roots!=1)return false;for(int x:n){Set<Integer>s=new HashSet<>();while(p.containsKey(x)){if(!s.add(x))return false;x=p.get(x);}}return true;} }",
+    "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
+    "timeComplexity": "See algorithm",
+    "spaceComplexity": "See algorithm",
+    "exampleWalkthrough": "Process the example one step at a time and return the stated output."
+  },
+  {
+    "id": "questions-marks",
+    "name": "Questions Marks",
+    "number": null,
+    "difficulty": "Medium",
+    "language": "Java",
+    "source": "Coderbyte",
+    "category": "Two Pointers",
+    "type": "algorithm",
+    "backendSkill": null,
+    "tags": [
+      "string",
+      "two pointers"
+    ],
+    "description": "Return true when every digit pair summing to 10 has exactly three question marks and at least one exists.",
+    "examples": [
+      "Input: \"arrb6???4xxbl5???eee5\"\nOutput: true"
+    ],
+    "constraints": [
+      "Follow the stated input format",
+      "Return the required result"
+    ],
+    "solutionCode": "class Solution { public boolean questionsMarks(String s){Character p=null;int q=0;boolean f=false;for(char c:s.toCharArray()){if(c=='?'){q++;continue;}if(Character.isDigit(c)){int x=c-'0';if(p!=null&&p+x==10){f=true;if(q!=3)return false;}p=(char)x;q=0;}}return f;} }",
+    "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
+    "timeComplexity": "See algorithm",
+    "spaceComplexity": "See algorithm",
+    "exampleWalkthrough": "Process the example one step at a time and return the stated output."
+  },
+  {
+    "id": "reverse-polish-notation",
+    "name": "Reverse Polish Notation",
+    "number": null,
+    "difficulty": "Medium",
+    "language": "Java",
+    "source": "Coderbyte",
+    "category": "Stack",
+    "type": "algorithm",
+    "backendSkill": null,
+    "tags": [
+      "stack",
+      "expression evaluation"
+    ],
+    "description": "Evaluate an arithmetic expression in postfix notation.",
+    "examples": [
+      "Input: [\"2\",\"1\",\"+\",\"3\",\"*\"]\nOutput: 9"
+    ],
+    "constraints": [
+      "Follow the stated input format",
+      "Return the required result"
+    ],
+    "solutionCode": "class Solution { public int evalRPN(String[] t){Deque<Integer>s=new ArrayDeque<>();for(String x:t){if(x.matches(\"-?\\\\d+\")){s.push(Integer.parseInt(x));continue;}int b=s.pop(),a=s.pop();switch(x){case \"+\"->s.push(a+b);case \"-\"->s.push(a-b);case \"*\"->s.push(a*b);case \"/\"->s.push(a/b);}}return s.pop();} }",
+    "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
+    "timeComplexity": "See algorithm",
+    "spaceComplexity": "See algorithm",
+    "exampleWalkthrough": "Process the example one step at a time and return the stated output."
+  },
+  {
+    "id": "max-heap-checker",
+    "name": "Max Heap Checker",
+    "number": null,
+    "difficulty": "Medium",
+    "language": "Java",
+    "source": "Coderbyte",
+    "category": "Heap / Priority Queue",
+    "type": "algorithm",
+    "backendSkill": null,
+    "tags": [
+      "heap",
+      "array"
+    ],
+    "description": "Return true when every parent is at least as large as its children.",
+    "examples": [
+      "Input: [90,15,10,7,12,2]\nOutput: true"
+    ],
+    "constraints": [
+      "Follow the stated input format",
+      "Return the required result"
+    ],
+    "solutionCode": "class Solution { public boolean isMaxHeap(int[]a){for(int i=0;i<a.length/2;i++){int l=2*i+1,r=l+1;if(a[i]<a[l]||(r<a.length&&a[i]<a[r]))return false;}return true;} }",
+    "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
+    "timeComplexity": "See algorithm",
+    "spaceComplexity": "See algorithm",
+    "exampleWalkthrough": "Process the example one step at a time and return the stated output."
+  },
+  {
+    "id": "lcs",
+    "name": "LCS",
+    "number": null,
+    "difficulty": "Medium",
+    "language": "Java",
+    "source": "Coderbyte",
+    "category": "2-D Dynamic Programming",
+    "type": "algorithm",
+    "backendSkill": null,
+    "tags": [
+      "dynamic programming",
+      "subsequence"
+    ],
+    "description": "Return the length of the longest common subsequence of two strings.",
+    "examples": [
+      "Input: \"abcde\", \"ace\"\nOutput: 3"
+    ],
+    "constraints": [
+      "Follow the stated input format",
+      "Return the required result"
+    ],
+    "solutionCode": "class Solution { public int longestCommonSubsequence(String a,String b){int[][]d=new int[a.length()+1][b.length()+1];for(int i=1;i<=a.length();i++)for(int j=1;j<=b.length();j++)d[i][j]=a.charAt(i-1)==b.charAt(j-1)?d[i-1][j-1]+1:Math.max(d[i-1][j],d[i][j-1]);return d[a.length()][b.length()];} }",
+    "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
+    "timeComplexity": "See algorithm",
+    "spaceComplexity": "See algorithm",
+    "exampleWalkthrough": "Process the example one step at a time and return the stated output."
+  },
+  {
+    "id": "maximal-rectangle",
+    "name": "Maximal Rectangle",
+    "number": null,
+    "difficulty": "Hard",
+    "language": "Java",
+    "source": "Coderbyte",
+    "category": "2-D Dynamic Programming",
+    "type": "algorithm",
+    "backendSkill": null,
+    "tags": [
+      "matrix",
+      "stack"
+    ],
+    "description": "Return the largest rectangle of ones in a binary matrix.",
+    "examples": [
+      "Input: [[1,0,1,0,0],[1,0,1,1,1],[1,1,1,1,1],[1,0,0,1,0]]\nOutput: 6"
+    ],
+    "constraints": [
+      "Follow the stated input format",
+      "Return the required result"
+    ],
+    "solutionCode": "class Solution { public int maximalRectangle(char[][]m){if(m.length==0)return 0;int[]h=new int[m[0].length];int b=0;for(char[]r:m){for(int i=0;i<r.length;i++)h[i]=r[i]=='1'?h[i]+1:0;b=Math.max(b,hist(h));}return b;}private int hist(int[]h){Deque<Integer>s=new ArrayDeque<>();int b=0;for(int i=0;i<=h.length;i++){int x=i==h.length?0:h[i];while(!s.isEmpty()&&h[s.peek()]>x){int z=h[s.pop()],w=s.isEmpty()?i:i-s.peek()-1;b=Math.max(b,z*w);}s.push(i);}return b;} }",
+    "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
+    "timeComplexity": "See algorithm",
+    "spaceComplexity": "See algorithm",
+    "exampleWalkthrough": "Process the example one step at a time and return the stated output."
+  },
+  {
+    "id": "farthest-nodes",
+    "name": "Farthest Nodes",
+    "number": null,
+    "difficulty": "Hard",
+    "language": "Java",
+    "source": "Coderbyte",
+    "category": "Graphs",
+    "type": "algorithm",
+    "backendSkill": null,
+    "tags": [
+      "graph",
+      "breadth first search"
+    ],
+    "description": "Given undirected edges, return the greatest shortest-path distance from node 1.",
+    "examples": [
+      "Input: [\"1-2\",\"1-3\",\"2-4\",\"3-5\"]\nOutput: 2"
+    ],
+    "constraints": [
+      "Follow the stated input format",
+      "Return the required result"
+    ],
+    "solutionCode": "class Solution { public int farthestNodes(String[]e){Map<Integer,List<Integer>>g=new HashMap<>();for(String x:e){String[]p=x.split(\"-\");int a=Integer.parseInt(p[0]),b=Integer.parseInt(p[1]);g.computeIfAbsent(a,k->new ArrayList<>()).add(b);g.computeIfAbsent(b,k->new ArrayList<>()).add(a);}Queue<Integer>q=new ArrayDeque<>();Map<Integer,Integer>d=new HashMap<>();q.add(1);d.put(1,0);int b=0;while(!q.isEmpty()){int x=q.remove();for(int y:g.getOrDefault(x,List.of()))if(!d.containsKey(y)){d.put(y,d.get(x)+1);b=Math.max(b,d.get(y));q.add(y);}}return b;} }",
+    "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
+    "timeComplexity": "See algorithm",
+    "spaceComplexity": "See algorithm",
+    "exampleWalkthrough": "Process the example one step at a time and return the stated output."
+  },
+  {
+    "id": "hamiltonian-path",
+    "name": "Hamiltonian Path",
+    "number": null,
+    "difficulty": "Hard",
+    "language": "Java",
+    "source": "Coderbyte",
+    "category": "Advanced Graphs",
+    "type": "algorithm",
+    "backendSkill": null,
+    "tags": [
+      "graph",
+      "backtracking"
+    ],
+    "description": "Determine whether an undirected graph has a path visiting every vertex exactly once.",
+    "examples": [
+      "Input: connected graph with a spanning path\nOutput: true"
+    ],
+    "constraints": [
+      "Follow the stated input format",
+      "Return the required result"
+    ],
+    "solutionCode": "class Solution { public boolean hasHamiltonianPath(int[][]g){for(int st=0;st<g.length;st++){boolean[]u=new boolean[g.length];u[st]=true;if(go(g,st,1,u))return true;}return false;}private boolean go(int[][]g,int x,int n,boolean[]u){if(n==g.length)return true;for(int y=0;y<g.length;y++)if(g[x][y]==1&&!u[y]){u[y]=true;if(go(g,y,n+1,u))return true;u[y]=false;}return false;} }",
+    "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
+    "timeComplexity": "See algorithm",
+    "spaceComplexity": "See algorithm",
+    "exampleWalkthrough": "Process the example one step at a time and return the stated output."
+  },
+  {
+    "id": "sql-employee-salaries",
+    "name": "SQL Employee Salaries",
+    "number": null,
+    "difficulty": "Hard",
+    "language": "SQL",
+    "source": "Coderbyte",
+    "category": "Database & SQL",
+    "type": "sql",
+    "backendSkill": "joins, derived tables, self-joins, ranking",
+    "tags": [
+      "SQL",
+      "JOIN",
+      "subquery",
+      "self-join",
+      "employee-manager"
+    ],
+    "description": "Return the employee with the third-highest salary, replacing division and manager IDs with names.",
+    "examples": [
+      "maintable_XXXX joins cb_companydivisions; return ID, Name, DivisionName, ManagerName, Salary."
+    ],
+    "constraints": [
+      "ManagerID may be NULL",
+      "maintable_XXXX appears twice"
+    ],
+    "schema": {
+      "maintable_XXXX": [
+        "ID",
+        "Name",
+        "DivisionID",
+        "ManagerID",
+        "Salary"
+      ],
+      "cb_companydivisions": [
+        "ID",
+        "DivisionName"
+      ]
+    },
+    "solutionCode": "SELECT e.ID,\n       e.Name,\n       d.DivisionName,\n       m.Name AS ManagerName,\n       e.Salary\nFROM maintable_XXXX AS e\nJOIN cb_companydivisions AS d\n  ON d.ID = e.DivisionID\nLEFT JOIN maintable_XXXX AS m\n  ON m.ID = e.ManagerID\nWHERE e.Salary = (\n    SELECT MIN(t.Salary)\n    FROM (\n        SELECT Salary\n        FROM maintable_XXXX\n        ORDER BY Salary DESC\n        LIMIT 3\n    ) AS t\n);",
+    "explanation": "A nested top-three query identifies the boundary salary. Joins resolve division and manager names.",
+    "timeComplexity": "O(n log n)",
+    "spaceComplexity": "O(n)",
+    "exampleWalkthrough": "The third row of the descending top-three result is selected."
+  },
+  {
+    "id": "sql-employees-more-than-managers",
+    "name": "SQL Employees Earning More Than Their Managers",
+    "number": null,
+    "difficulty": "Hard",
+    "language": "SQL",
+    "source": "LeetCode",
+    "category": "Database & SQL",
+    "type": "sql",
+    "backendSkill": "self-joins, correlated subqueries, hierarchical data",
+    "tags": [
+      "SQL",
+      "JOIN",
+      "correlated subquery",
+      "self-join",
+      "parent-child"
+    ],
+    "description": "Return employees earning more than their manager and more than the average salary of direct peers.",
+    "examples": [
+      "Employee(id,name,salary,managerId) references itself through managerId."
+    ],
+    "constraints": [
+      "Employees without managers are excluded",
+      "The peer average is correlated"
+    ],
+    "schema": {
+      "Employee": [
+        "id",
+        "name",
+        "salary",
+        "managerId"
+      ]
+    },
+    "solutionCode": "SELECT e.name AS Employee,\n       e.salary AS EmployeeSalary,\n       m.name AS Manager,\n       m.salary AS ManagerSalary\nFROM Employee AS e\nJOIN Employee AS m\n  ON m.id = e.managerId\nWHERE e.salary > m.salary\n  AND e.salary > (\n      SELECT AVG(peer.salary)\n      FROM Employee AS peer\n      WHERE peer.managerId = e.managerId\n  );",
+    "explanation": "The self-join finds the manager; a third Employee instance computes the peer average.",
+    "timeComplexity": "O(n²)",
+    "spaceComplexity": "O(1)",
+    "exampleWalkthrough": "Compare e with m, then with the correlated peer average."
+  },
+  {
+    "id": "sql-department-top-salaries",
+    "name": "SQL Department Top Salaries",
+    "number": null,
+    "difficulty": "Hard",
+    "language": "SQL",
+    "source": "LeetCode",
+    "category": "Database & SQL",
+    "type": "sql",
+    "backendSkill": "joins, correlated subqueries, group boundaries",
+    "tags": [
+      "SQL",
+      "JOIN",
+      "subquery",
+      "aggregation",
+      "ranking"
+    ],
+    "description": "Return every employee whose salary equals the maximum salary in their department, including ties.",
+    "examples": [
+      "Employee joins Department; tied maximum salaries remain."
+    ],
+    "constraints": [
+      "DepartmentId references Department.id"
+    ],
+    "schema": {
+      "Employee": [
+        "id",
+        "name",
+        "salary",
+        "departmentId"
+      ],
+      "Department": [
+        "id",
+        "name"
+      ]
+    },
+    "solutionCode": "SELECT d.name AS Department,\n       e.name AS Employee,\n       e.salary AS Salary\nFROM Employee AS e\nJOIN Department AS d\n  ON d.id = e.departmentId\nWHERE e.salary = (\n    SELECT MAX(e2.salary)\n    FROM Employee AS e2\n    WHERE e2.departmentId = e.departmentId\n)\nORDER BY d.name, e.name;",
+    "explanation": "The join supplies the department name. The correlated MAX is scoped to the current department.",
+    "timeComplexity": "O(n²)",
+    "spaceComplexity": "O(1)",
+    "exampleWalkthrough": "e2 is restricted to e.departmentId, so tied maxima pass."
+  },
+  {
+    "id": "sql-parent-child-rollup",
+    "name": "SQL Parent-Child Category Rollup",
+    "number": null,
+    "difficulty": "Hard",
+    "language": "SQL",
+    "source": "LitCode",
+    "category": "Database & SQL",
+    "type": "sql",
+    "backendSkill": "self-joins, parent-child hierarchies, correlated subqueries, aggregation",
+    "tags": [
+      "SQL",
+      "JOIN",
+      "subquery",
+      "self-join",
+      "parent-child",
+      "aggregation"
+    ],
+    "description": "For each child category, report parent, grandparent, product count, and revenue only when it has a product above its category average.",
+    "examples": [
+      "categories(id,parent_id,name) joins products(id,category_id,price)."
+    ],
+    "constraints": [
+      "Root categories have parent_id NULL",
+      "MySQL 5.5-compatible without recursive CTE"
+    ],
+    "schema": {
+      "categories": [
+        "id",
+        "parent_id",
+        "name"
+      ],
+      "products": [
+        "id",
+        "category_id",
+        "price"
+      ]
+    },
+    "solutionCode": "SELECT parent.name AS ParentCategory,\n       root.name AS GrandparentCategory,\n       child.name AS ChildCategory,\n       COUNT(DISTINCT p.id) AS ProductCount,\n       COALESCE(SUM(p.price), 0) AS Revenue\nFROM categories AS child\nJOIN categories AS parent\n  ON parent.id = child.parent_id\nLEFT JOIN categories AS root\n  ON root.id = parent.parent_id\nLEFT JOIN products AS p\n  ON p.category_id = child.id\nWHERE EXISTS (\n    SELECT 1\n    FROM products AS p2\n    WHERE p2.category_id = child.id\n      AND p2.price > (\n          SELECT AVG(p3.price)\n          FROM products AS p3\n          WHERE p3.category_id = child.id\n      )\n)\nGROUP BY parent.name, root.name, child.name\nORDER BY parent.name, child.name;",
+    "explanation": "Self-joins expose two hierarchy levels. EXISTS and nested AVG keep qualifying children; the outer query aggregates products.",
+    "timeComplexity": "O(c+p) plus correlated work",
+    "spaceComplexity": "O(c+p)",
+    "exampleWalkthrough": "p3 computes the child average, p2 checks for an above-average product, and the outer query rolls up the child."
   }
 ]

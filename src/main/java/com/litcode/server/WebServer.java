@@ -6,6 +6,7 @@ import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import com.litcode.engine.ProblemStore;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class WebServer {
@@ -25,12 +26,20 @@ public class WebServer {
         app.get("/", ctx -> ctx.redirect("/index.html"));
 
         app.get("/api/problems", ctx -> {
-            ctx.json(store.getAll().stream().map(p -> Map.of(
-                "id", p.getId(),
-                "name", p.getName(),
-                "number", p.getNumber(),
-                "difficulty", p.getDifficulty()
-            )).toList());
+            ctx.json(store.getAll().stream().map(p -> {
+                Map<String, Object> summary = new LinkedHashMap<>();
+                summary.put("id", p.getId());
+                summary.put("name", p.getName());
+                summary.put("number", p.getNumber());
+                summary.put("difficulty", p.getDifficulty());
+                summary.put("language", p.getLanguage());
+                summary.put("source", p.getSource());
+                summary.put("category", p.getCategory());
+                summary.put("type", p.getType());
+                summary.put("backendSkill", p.getBackendSkill());
+                summary.put("tags", p.getTags());
+                return summary;
+            }).toList());
         });
 
         app.get("/api/problems/{id}", ctx -> {

@@ -22,7 +22,8 @@
         .sidebar-header h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #e94560; margin-bottom: 10px; }
         .sidebar-close { display: none; }
         .search-box { width: 100%; padding: 8px 12px; border: 1px solid #0f3460; border-radius: 6px; background: #1a1a2e; color: #eee; font-size: 13px; outline: none; }
-        .search-box:focus { border-color: #e94560; }
+        .search-box:focus, .category-filter:focus { border-color: #e94560; }
+        .category-filter { width: 100%; margin-top: 8px; padding: 8px 12px; border: 1px solid #0f3460; border-radius: 6px; background: #1a1a2e; color: #eee; font-size: 13px; outline: none; }
         .problem-list { flex: 1; overflow-y: auto; padding: 8px; }
 
         .problem-item { padding: 10px 12px; border-radius: 6px; margin-bottom: 4px; cursor: pointer; border-left: 3px solid transparent; transition: all 0.15s; display: flex; justify-content: space-between; align-items: center; }
@@ -45,6 +46,7 @@
         .problem-header h2 { font-size: 24px; color: #eee; margin-bottom: 8px; }
         .problem-meta { display: flex; gap: 12px; align-items: center; }
         .problem-meta .complexity { font-size: 12px; color: #8892b0; background: #0f3460; padding: 4px 10px; border-radius: 4px; }
+        .language-badge { font-size: 10px; color: #64ffda; background: #123f45; padding: 3px 8px; border-radius: 10px; text-transform: uppercase; font-weight: 600; }
 
         .section { margin-bottom: 28px; }
         .section-title { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #e94560; margin-bottom: 12px; font-weight: 600; border-bottom: 1px solid #0f3460; padding-bottom: 6px; }
@@ -135,6 +137,9 @@
                     <button class="sidebar-close" id="close-problems" type="button" aria-label="Close problems list">×</button>
                 </div>
                 <input type="text" class="search-box" id="search" placeholder="Search problems..." />
+                <select class="category-filter" id="category-filter" aria-label="Filter by category">
+                    <option value="">All categories</option>
+                </select>
             </div>
             <div class="problem-list" id="problem-list">
             </div>
@@ -153,6 +158,7 @@
         const appShell = document.getElementById('app-shell');
         const sidebar = document.getElementById('problem-sidebar');
         const openProblemsButton = document.getElementById('open-problems');
+        const categoryFilter = document.getElementById('category-filter');
 
         function setProblemListOpen(open) {
             const isMobile = mobileQuery.matches;
@@ -166,15 +172,38 @@
             const res = await fetch(`${API}/api/problems`);
             problems = await res.json();
             document.getElementById('problem-count').textContent = `${problems.length} problems`;
-            renderList(problems);
+            renderCategoryFilter();
+            renderList(filteredProblems());
+        }
+
+        function categoryCounts() {
+            return problems.reduce((counts, problem) => {
+                counts[problem.category] = (counts[problem.category] || 0) + 1;
+                return counts;
+            }, {});
+        }
+
+        function renderCategoryFilter() {
+            const counts = categoryCounts();
+            const options = Object.keys(counts).sort().map(category =>
+                `<option value="${escapeHtml(category)}">${escapeHtml(category)} (${counts[category]})</option>`
+            ).join('');
+            categoryFilter.innerHTML = `<option value="">All categories (${problems.length})</option>${options}`;
+        }
+
+        function filteredProblems() {
+            const selectedCategory = categoryFilter.value;
+            return problems.filter(problem => matchesSearch(problem, document.getElementById('search').value)
+                && (!selectedCategory || problem.category === selectedCategory));
         }
 
         function renderList(list) {
             const container = document.getElementById('problem-list');
             container.innerHTML = list.map(p => `
                 <div class="problem-item ${p.id === selectedId ? 'selected' : ''}" onclick="selectProblem('${p.id}')">
-                    <span class="problem-num">${p.number}.</span>
+                    <span class="problem-num">${p.number == null ? '' : p.number + '.'}</span>
                     <span class="problem-name">${p.name}</span>
+                    ${p.language && p.language !== 'Java' ? `<span class="language-badge">${p.language}</span>` : ''}
                     <span class="badge badge-${p.difficulty.toLowerCase()}">${p.difficulty}</span>
                 </div>
             `).join('');
@@ -183,10 +212,7 @@
         async function selectProblem(id) {
             selectedId = id;
             setProblemListOpen(false);
-            renderList(problems.filter(p => {
-                const q = document.getElementById('search').value.toLowerCase();
-                return !q || p.name.toLowerCase().includes(q) || String(p.number).includes(q);
-            }));
+            renderList(filteredProblems());
 
             const res = await fetch(`${API}/api/problems/${id}`);
             const p = await res.json();
@@ -199,9 +225,12 @@
 
             main.innerHTML = `
                 <div class="problem-header">
-                    <h2>${p.number}. ${escapeHtml(p.name)}</h2>
+                    <h2>${p.number == null ? '' : p.number + '. '}${escapeHtml(p.name)}</h2>
                     <div class="problem-meta">
                         <span class="badge badge-${p.difficulty.toLowerCase()}">${p.difficulty}</span>
+                        ${p.language ? `<span class="complexity">${escapeHtml(p.language)}</span>` : ''}
+                        ${p.category ? `<span class="complexity">${escapeHtml(p.category)}</span>` : ''}
+                        ${p.source ? `<span class="complexity">Source: ${escapeHtml(p.source)}</span>` : ''}
                         <span class="complexity">Time: ${escapeHtml(p.timeComplexity)}</span>
                         <span class="complexity">Space: ${escapeHtml(p.spaceComplexity)}</span>
                     </div>
@@ -213,13 +242,21 @@
                 </div>
 
                 <div class="section">
+                    <div class="section-title">${p.language === 'SQL' ? 'Schema' : 'Examples'}</div>
+                    ${p.language === 'SQL' ? `<div class="code-block">${formatSchema(p.schema)}</div>` : ''}
+                    ${p.language === 'SQL' ? '' : examples}
+                </div>
+
+                ${p.language === 'SQL' ? `
+                <div class="section">
                     <div class="section-title">Examples</div>
                     ${examples}
                 </div>
+                ` : ''}
 
                 <div class="section">
-                    <div class="section-title">Solution</div>
-                    <div class="code-block">${escapeHtml(p.solutionCode)}</div>
+                    <div class="section-title">${p.language === 'SQL' ? 'Query' : 'Solution'}</div>
+                    <div class="code-block">${p.language === 'SQL' ? formatSqlQuery(p.solutionCode) : escapeHtml(p.solutionCode)}</div>
                 </div>
 
                 <div class="section">
@@ -252,11 +289,42 @@
             return escapeHtml(text).replace(/\n/g, '<br>');
         }
 
+        function formatSchema(schema) {
+            return escapeHtml(JSON.stringify(schema || {}, null, 2));
+        }
+
+        function formatSqlQuery(query) {
+            if (!query) return '';
+            const normalized = query.replace(/\s+/g, ' ').trim();
+            const formatted = normalized
+                .replace(/\s+(LEFT OUTER JOIN|RIGHT OUTER JOIN|FULL OUTER JOIN|LEFT JOIN|RIGHT JOIN|FULL JOIN|INNER JOIN|CROSS JOIN|JOIN)\s+/gi, '\n$1 ')
+                .replace(/\s+(FROM|WHERE|GROUP BY|ORDER BY|HAVING|LIMIT)\s+/gi, '\n$1 ')
+                .replace(/\s+ON\s+/gi, '\n  ON ')
+                .replace(/\s+(AND|OR)\s+/gi, '\n  $1 ')
+                .replace(/,\s*/g, ',\n       ');
+            return escapeHtml(formatted);
+        }
+
+        function matchesSearch(problem, query) {
+            const q = query.trim().toLowerCase();
+            if (!q) return true;
+            const searchable = [
+                problem.name,
+                problem.language,
+                problem.category,
+                problem.source,
+                problem.type,
+                problem.backendSkill,
+                ...(problem.tags || [])
+            ].filter(Boolean).join(' ').toLowerCase();
+            return searchable.includes(q) || (problem.number != null && String(problem.number).includes(q));
+        }
+
         document.getElementById('search').addEventListener('input', (e) => {
-            const q = e.target.value.toLowerCase();
-            const filtered = problems.filter(p => !q || p.name.toLowerCase().includes(q) || String(p.number).includes(q));
-            renderList(filtered);
+            renderList(filteredProblems());
         });
+
+        categoryFilter.addEventListener('change', () => renderList(filteredProblems()));
 
         openProblemsButton.addEventListener('click', () => {
             setProblemListOpen(true);

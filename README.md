@@ -2,6 +2,8 @@
 
 A LeetCode problem viewer with minimal solutions and explanations. Browse problems, see the optimal solution code, and understand the approach.
 
+The catalog includes NeetCode-style categories across the Java problems, the remaining Coderbyte Java challenges, and clearly labeled SQL practice entries. SQL entries document schema assumptions and show SQL queries instead of Java solutions. The sidebar search also filters by category, language, source, backend skill, and tags.
+
 ## What It Does
 
 Select a LeetCode problem from the sidebar and view:
@@ -22,6 +24,8 @@ src/main/resources/static/index.html        ← single-page UI
 ```
 
 Problems are stored in a single JSON file. No database. To add a problem, append an entry to `problems.json` — the app picks it up on restart.
+
+Optional metadata fields include `language`, `source`, `category`, `type`, `backendSkill`, `tags`, and `schema`. Use `number: null` for entries without a LeetCode-style problem number.
 
 ## Tech Stack
 
@@ -46,7 +50,7 @@ Open http://localhost:7070
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `GET` | `/api/problems` | List all problems (id, name, number, difficulty) |
+| `GET` | `/api/problems` | List all problems with summary metadata |
 | `GET` | `/api/problems/{id}` | Full problem detail (description, examples, solution, explanation) |
 
 ## Adding Problems
@@ -59,6 +63,9 @@ Add an entry to `src/main/resources/data/problems.json`:
   "name": "Two Sum",
   "number": 1,
   "difficulty": "Easy",
+  "language": "Java",
+  "source": "LeetCode",
+  "category": "Arrays & Hashing",
   "description": "...",
   "examples": ["..."],
   "constraints": ["..."],
@@ -70,3 +77,5 @@ Add an entry to `src/main/resources/data/problems.json`:
 ```
 
 Then rebuild and restart.
+
+For SQL practice entries, set `language` to `SQL`, use `number: null`, add the `schema` assumptions, and put the query in `solutionCode`. Do not create Java source files or Java tests for SQL-only entries.
