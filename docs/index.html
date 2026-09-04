@@ -13,12 +13,15 @@
         .header h1 { font-size: 20px; color: #e94560; }
         .header h1 span { color: #64ffda; }
         .header .stats { font-size: 13px; color: #8892b0; background: #0f3460; padding: 4px 10px; border-radius: 4px; }
+        .mobile-menu-button { display: none; }
 
         .container { display: grid; grid-template-columns: 300px 1fr; height: calc(100vh - 56px); }
 
         .sidebar { border-right: 1px solid #0f3460; display: flex; flex-direction: column; overflow: hidden; }
         .sidebar-header { padding: 12px 16px; background: #16213e; border-bottom: 1px solid #0f3460; }
+        .sidebar-header-row { display: flex; align-items: center; justify-content: space-between; }
         .sidebar-header h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #e94560; margin-bottom: 10px; }
+        .sidebar-close { display: none; }
         .search-box { width: 100%; padding: 8px 12px; border: 1px solid #0f3460; border-radius: 6px; background: #1a1a2e; color: #eee; font-size: 13px; outline: none; }
         .search-box:focus { border-color: #e94560; }
         .problem-list { flex: 1; overflow-y: auto; padding: 8px; }
@@ -35,7 +38,7 @@
         .badge-medium { background: #4a3800; color: #ffc107; }
         .badge-hard { background: #4a1420; color: #e94560; }
 
-        .main { overflow-y: auto; padding: 32px 48px; }
+        .main { min-width: 0; overflow-y: auto; padding: 32px 48px; }
         .main.empty { display: flex; align-items: center; justify-content: center; }
         .empty-state { text-align: center; color: #555; font-size: 16px; }
 
@@ -60,25 +63,85 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #0f3460; border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: #1a4a7a; }
+
+        @media (max-width: 760px) {
+            body { overflow: hidden; }
+            .header { padding: 12px 16px; gap: 10px; }
+            .header h1 { font-size: 18px; }
+            .mobile-menu-button {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                border: 1px solid #0f3460;
+                border-radius: 6px;
+                padding: 7px 10px;
+                background: #1a1a2e;
+                color: #64ffda;
+                font: inherit;
+                font-size: 12px;
+                cursor: pointer;
+            }
+            .mobile-menu-button:focus-visible,
+            .sidebar-close:focus-visible,
+            .problem-item:focus-visible { outline: 2px solid #64ffda; outline-offset: 2px; }
+            .container { position: relative; display: block; height: calc(100vh - 52px); }
+            .sidebar {
+                position: absolute;
+                inset: 0 auto 0 0;
+                z-index: 2;
+                width: min(88vw, 360px);
+                background: #1a1a2e;
+                box-shadow: 12px 0 28px rgba(0, 0, 0, 0.35);
+                transform: translateX(0);
+                transition: transform 0.2s ease;
+            }
+            .sidebar-hidden .sidebar { transform: translateX(-105%); pointer-events: none; }
+            .sidebar-header-row { align-items: center; }
+            .sidebar-header h2 { margin-bottom: 10px; }
+            .sidebar-close {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 30px;
+                height: 30px;
+                border: 1px solid #0f3460;
+                border-radius: 6px;
+                background: transparent;
+                color: #8892b0;
+                font-size: 20px;
+                line-height: 1;
+                cursor: pointer;
+            }
+            .main { height: 100%; padding: 24px 16px 40px; width: 100%; }
+            .problem-header h2 { font-size: 21px; }
+            .problem-meta { flex-wrap: wrap; gap: 8px; }
+        }
     </style>
 </head>
 <body>
     <div class="header">
+        <button class="mobile-menu-button" id="open-problems" type="button" aria-controls="problem-sidebar" aria-expanded="true">
+            <span aria-hidden="true">☰</span>
+            <span>Problems</span>
+        </button>
         <h1>Lit<span>Code</span></h1>
         <span class="stats" id="problem-count">0 problems</span>
     </div>
 
-    <div class="container">
-        <div class="sidebar">
+    <div class="container" id="app-shell">
+        <aside class="sidebar" id="problem-sidebar" aria-label="Problem navigation">
             <div class="sidebar-header">
-                <h2>Problems</h2>
+                <div class="sidebar-header-row">
+                    <h2>Problems</h2>
+                    <button class="sidebar-close" id="close-problems" type="button" aria-label="Close problems list">×</button>
+                </div>
                 <input type="text" class="search-box" id="search" placeholder="Search problems..." />
             </div>
             <div class="problem-list" id="problem-list">
             </div>
-        </div>
+        </aside>
 
-        <div class="main empty" id="main-content">
+        <div class="main empty" id="main-content" tabindex="-1">
             <div class="empty-state">Select a problem from the list</div>
         </div>
     </div>
@@ -86,6 +149,18 @@
     <script>
         let problems = [];
         let selectedId = null;
+        const mobileQuery = window.matchMedia('(max-width: 760px)');
+        const appShell = document.getElementById('app-shell');
+        const sidebar = document.getElementById('problem-sidebar');
+        const openProblemsButton = document.getElementById('open-problems');
+
+        function setProblemListOpen(open) {
+            const isMobile = mobileQuery.matches;
+            const visible = isMobile ? open : true;
+            appShell.classList.toggle('sidebar-hidden', isMobile && !visible);
+            sidebar.setAttribute('aria-hidden', String(isMobile && !visible));
+            openProblemsButton.setAttribute('aria-expanded', String(visible));
+        }
 
         async function loadProblems() {
             const res = await fetch('data/problems.json');
@@ -107,6 +182,7 @@
 
         async function selectProblem(id) {
             selectedId = id;
+            setProblemListOpen(false);
             renderList(problems.filter(p => {
                 const q = document.getElementById('search').value.toLowerCase();
                 return !q || p.name.toLowerCase().includes(q) || String(p.number).includes(q);
@@ -163,6 +239,7 @@
                     ${constraints}
                 </div>
             `;
+            main.focus();
         }
 
         function escapeHtml(str) {
@@ -181,6 +258,21 @@
             renderList(filtered);
         });
 
+        openProblemsButton.addEventListener('click', () => {
+            setProblemListOpen(true);
+            document.getElementById('search').focus();
+        });
+
+        document.getElementById('close-problems').addEventListener('click', () => {
+            setProblemListOpen(false);
+            openProblemsButton.focus();
+        });
+
+        mobileQuery.addEventListener('change', () => {
+            setProblemListOpen(!mobileQuery.matches || !appShell.classList.contains('sidebar-hidden'));
+        });
+
+        setProblemListOpen(true);
         loadProblems();
     </script>
 </body>
