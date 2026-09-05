@@ -13,7 +13,7 @@ for (const file of files) {
   assert.match(html, /id="close-problems"/, `${file}: missing mobile close control`);
   assert.match(html, /aria-controls="problem-sidebar"/, `${file}: missing sidebar relationship`);
   assert.match(html, /\.sidebar-hidden \.sidebar\s*\{/, `${file}: missing hidden drawer state`);
-  assert.match(html, /\.mobile-menu-button\s*\{[\s\S]*?position:\s*sticky/, `${file}: Problems control must stay visible while reading on mobile`);
+  assert.match(html, /\.mobile-menu-button\s*\{[\s\S]*?position:\s*fixed/, `${file}: Problems control must stay fixed to the viewport on mobile`);
   assert.match(html, /function setProblemListOpen\(open\)/, `${file}: missing drawer state function`);
   assert.match(html, /setProblemListOpen\(false\)/, `${file}: selecting a problem must close the drawer`);
   assert.match(html, /matchMedia\('\(max-width: 760px\)'\)/, `${file}: missing responsive breakpoint state`);

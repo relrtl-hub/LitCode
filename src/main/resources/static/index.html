@@ -67,13 +67,14 @@
 
         @media (max-width: 760px) {
             body { overflow: hidden; }
-            .header { position: sticky; top: 0; z-index: 3; padding: 12px 16px; gap: 10px; }
+            .header { position: sticky; top: 0; z-index: 3; padding: 12px 16px 12px 112px; gap: 10px; }
             .header h1 { font-size: 18px; }
             .mobile-menu-button {
                 display: inline-flex;
-                position: sticky;
-                top: 0;
-                z-index: 4;
+                position: fixed;
+                top: 10px;
+                left: 16px;
+                z-index: 10;
                 align-items: center;
                 gap: 6px;
                 border: 1px solid #0f3460;
