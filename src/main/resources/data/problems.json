@@ -755,7 +755,7 @@
       "Follow the stated input format",
       "Return the required result"
     ],
-    "solutionCode": "class Solution { public boolean arrayAddition(int[] a) { Arrays.sort(a); return go(a,a.length-2,a[a.length-1]); } private boolean go(int[] a,int i,int r) { if(r==0)return true; if(i<0||r<0)return false; return go(a,i-1,r-a[i])||go(a,i-1,r); } }",
+    "solutionCode": "class Solution {\n    public boolean arrayAddition(int[] a) {\n        Arrays.sort(a);\n        return go(a, a.length - 2, a[a.length - 1]);\n    }\n\n    private boolean go(int[] a, int i, int r) {\n        if (r == 0) return true;\n        if (i < 0 || r < 0) return false;\n        return go(a, i - 1, r - a[i]) || go(a, i - 1, r);\n    }\n}",
     "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
     "timeComplexity": "See algorithm",
     "spaceComplexity": "See algorithm",
@@ -783,7 +783,7 @@
       "Follow the stated input format",
       "Return the required result"
     ],
-    "solutionCode": "class Solution { public String longestWord(String s) { String best=\"\"; for(String w:s.replaceAll(\"[^A-Za-z0-9 ]\",\" \").trim().split(\"\\\\s+\")) if(w.length()>best.length())best=w; return best; } }",
+    "solutionCode": "class Solution {\n    public String longestWord(String s) {\n        String best = \"\";\n        for (String w : s.replaceAll(\"[^A-Za-z0-9 ]\", \" \").trim().split(\"\\\\s+\")) {\n            if (w.length() > best.length()) best = w;\n        }\n        return best;\n    }\n}",
     "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
     "timeComplexity": "See algorithm",
     "spaceComplexity": "See algorithm",
@@ -811,7 +811,7 @@
       "Follow the stated input format",
       "Return the required result"
     ],
-    "solutionCode": "class Solution { public boolean bracketMatcher(String s) { int n=0; for(char c:s.toCharArray()){if(c=='(')n++;if(c==')'&&--n<0)return false;}return n==0;} }",
+    "solutionCode": "class Solution {\n    public boolean bracketMatcher(String s) {\n        int balance = 0;\n        for (char c : s.toCharArray()) {\n            if (c == '(') balance++;\n            if (c == ')' && --balance < 0) return false;\n        }\n        return balance == 0;\n    }\n}",
     "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
     "timeComplexity": "See algorithm",
     "spaceComplexity": "See algorithm",
@@ -839,7 +839,7 @@
       "Follow the stated input format",
       "Return the required result"
     ],
-    "solutionCode": "class Solution { public String minWindow(String n,String k){int[]z=new int[128];for(char c:k.toCharArray())z[c]++;int miss=k.length(),l=0,st=0,len=Integer.MAX_VALUE;for(int r=0;r<n.length();r++){if(z[n.charAt(r)]-->0)miss--;while(miss==0){if(r-l+1<len){st=l;len=r-l+1;}if(++z[n.charAt(l++)]>0)miss++;}}return len==Integer.MAX_VALUE?\"\":n.substring(st,st+len);} }",
+    "solutionCode": "class Solution {\n    public String minWindow(String n, String k) {\n        int[] counts = new int[128];\n        for (char c : k.toCharArray()) counts[c]++;\n\n        int missing = k.length();\n        int left = 0;\n        int start = 0;\n        int length = Integer.MAX_VALUE;\n\n        for (int right = 0; right < n.length(); right++) {\n            if (counts[n.charAt(right)]-- > 0) missing--;\n\n            while (missing == 0) {\n                if (right - left + 1 < length) {\n                    start = left;\n                    length = right - left + 1;\n                }\n                if (++counts[n.charAt(left++)] > 0) missing++;\n            }\n        }\n\n        return length == Integer.MAX_VALUE ? \"\" : n.substring(start, start + length);\n    }\n}",
     "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
     "timeComplexity": "See algorithm",
     "spaceComplexity": "See algorithm",
@@ -867,7 +867,7 @@
       "Follow the stated input format",
       "Return the required result"
     ],
-    "solutionCode": "class Solution { public boolean treeConstructor(String[] a){Map<Integer,Integer>p=new HashMap<>(),c=new HashMap<>();Set<Integer>n=new HashSet<>();for(String x:a){String[]v=x.substring(1,x.length()-1).split(\",\");int ch=Integer.parseInt(v[0]),pa=Integer.parseInt(v[1]);n.add(ch);n.add(pa);if(p.put(ch,pa)!=null||c.merge(pa,1,Integer::sum)>2)return false;}int roots=0;for(int x:n)if(!p.containsKey(x))roots++;if(roots!=1)return false;for(int x:n){Set<Integer>s=new HashSet<>();while(p.containsKey(x)){if(!s.add(x))return false;x=p.get(x);}}return true;} }",
+    "solutionCode": "class Solution {\n    public boolean treeConstructor(String[] a) {\n        Map<Integer, Integer> parent = new HashMap<>();\n        Map<Integer, Integer> children = new HashMap<>();\n        Set<Integer> nodes = new HashSet<>();\n\n        for (String x : a) {\n            String[] values = x.substring(1, x.length() - 1).split(\",\");\n            int child = Integer.parseInt(values[0]);\n            int parentNode = Integer.parseInt(values[1]);\n            nodes.add(child);\n            nodes.add(parentNode);\n\n            if (parent.put(child, parentNode) != null\n                    || children.merge(parentNode, 1, Integer::sum) > 2) {\n                return false;\n            }\n        }\n\n        int roots = 0;\n        for (int node : nodes) {\n            if (!parent.containsKey(node)) roots++;\n        }\n        if (roots != 1) return false;\n\n        for (int node : nodes) {\n            Set<Integer> visited = new HashSet<>();\n            while (parent.containsKey(node)) {\n                if (!visited.add(node)) return false;\n                node = parent.get(node);\n            }\n        }\n        return true;\n    }\n}",
     "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
     "timeComplexity": "See algorithm",
     "spaceComplexity": "See algorithm",
@@ -895,7 +895,7 @@
       "Follow the stated input format",
       "Return the required result"
     ],
-    "solutionCode": "class Solution { public boolean questionsMarks(String s){Character p=null;int q=0;boolean f=false;for(char c:s.toCharArray()){if(c=='?'){q++;continue;}if(Character.isDigit(c)){int x=c-'0';if(p!=null&&p+x==10){f=true;if(q!=3)return false;}p=(char)x;q=0;}}return f;} }",
+    "solutionCode": "class Solution {\n    public boolean questionsMarks(String s) {\n        Character previousDigit = null;\n        int questionMarks = 0;\n        boolean foundPair = false;\n\n        for (char c : s.toCharArray()) {\n            if (c == '?') {\n                questionMarks++;\n                continue;\n            }\n            if (Character.isDigit(c)) {\n                int digit = c - '0';\n                if (previousDigit != null && previousDigit + digit == 10) {\n                    foundPair = true;\n                    if (questionMarks != 3) return false;\n                }\n                previousDigit = (char) digit;\n                questionMarks = 0;\n            }\n        }\n        return foundPair;\n    }\n}",
     "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
     "timeComplexity": "See algorithm",
     "spaceComplexity": "See algorithm",
@@ -923,7 +923,7 @@
       "Follow the stated input format",
       "Return the required result"
     ],
-    "solutionCode": "class Solution { public int evalRPN(String[] t){Deque<Integer>s=new ArrayDeque<>();for(String x:t){if(x.matches(\"-?\\\\d+\")){s.push(Integer.parseInt(x));continue;}int b=s.pop(),a=s.pop();switch(x){case \"+\"->s.push(a+b);case \"-\"->s.push(a-b);case \"*\"->s.push(a*b);case \"/\"->s.push(a/b);}}return s.pop();} }",
+    "solutionCode": "class Solution {\n    public int evalRPN(String[] tokens) {\n        Deque<Integer> stack = new ArrayDeque<>();\n\n        for (String token : tokens) {\n            if (token.matches(\"-?\\\\d+\")) {\n                stack.push(Integer.parseInt(token));\n                continue;\n            }\n\n            int right = stack.pop();\n            int left = stack.pop();\n            switch (token) {\n                case \"+\" -> stack.push(left + right);\n                case \"-\" -> stack.push(left - right);\n                case \"*\" -> stack.push(left * right);\n                case \"/\" -> stack.push(left / right);\n            }\n        }\n        return stack.pop();\n    }\n}",
     "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
     "timeComplexity": "See algorithm",
     "spaceComplexity": "See algorithm",
@@ -951,7 +951,7 @@
       "Follow the stated input format",
       "Return the required result"
     ],
-    "solutionCode": "class Solution { public boolean isMaxHeap(int[]a){for(int i=0;i<a.length/2;i++){int l=2*i+1,r=l+1;if(a[i]<a[l]||(r<a.length&&a[i]<a[r]))return false;}return true;} }",
+    "solutionCode": "class Solution {\n    public boolean isMaxHeap(int[] a) {\n        for (int i = 0; i < a.length / 2; i++) {\n            int left = 2 * i + 1;\n            int right = left + 1;\n            if (a[i] < a[left]\n                    || (right < a.length && a[i] < a[right])) {\n                return false;\n            }\n        }\n        return true;\n    }\n}",
     "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
     "timeComplexity": "See algorithm",
     "spaceComplexity": "See algorithm",
@@ -979,7 +979,7 @@
       "Follow the stated input format",
       "Return the required result"
     ],
-    "solutionCode": "class Solution { public int longestCommonSubsequence(String a,String b){int[][]d=new int[a.length()+1][b.length()+1];for(int i=1;i<=a.length();i++)for(int j=1;j<=b.length();j++)d[i][j]=a.charAt(i-1)==b.charAt(j-1)?d[i-1][j-1]+1:Math.max(d[i-1][j],d[i][j-1]);return d[a.length()][b.length()];} }",
+    "solutionCode": "class Solution {\n    public int longestCommonSubsequence(String a, String b) {\n        int[][] dp = new int[a.length() + 1][b.length() + 1];\n\n        for (int i = 1; i <= a.length(); i++) {\n            for (int j = 1; j <= b.length(); j++) {\n                dp[i][j] = a.charAt(i - 1) == b.charAt(j - 1)\n                        ? dp[i - 1][j - 1] + 1\n                        : Math.max(dp[i - 1][j], dp[i][j - 1]);\n            }\n        }\n        return dp[a.length()][b.length()];\n    }\n}",
     "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
     "timeComplexity": "See algorithm",
     "spaceComplexity": "See algorithm",
@@ -1007,7 +1007,7 @@
       "Follow the stated input format",
       "Return the required result"
     ],
-    "solutionCode": "class Solution { public int maximalRectangle(char[][]m){if(m.length==0)return 0;int[]h=new int[m[0].length];int b=0;for(char[]r:m){for(int i=0;i<r.length;i++)h[i]=r[i]=='1'?h[i]+1:0;b=Math.max(b,hist(h));}return b;}private int hist(int[]h){Deque<Integer>s=new ArrayDeque<>();int b=0;for(int i=0;i<=h.length;i++){int x=i==h.length?0:h[i];while(!s.isEmpty()&&h[s.peek()]>x){int z=h[s.pop()],w=s.isEmpty()?i:i-s.peek()-1;b=Math.max(b,z*w);}s.push(i);}return b;} }",
+    "solutionCode": "class Solution {\n    public int maximalRectangle(char[][] matrix) {\n        if (matrix.length == 0) return 0;\n\n        int[] heights = new int[matrix[0].length];\n        int best = 0;\n        for (char[] row : matrix) {\n            for (int i = 0; i < row.length; i++) {\n                heights[i] = row[i] == '1' ? heights[i] + 1 : 0;\n            }\n            best = Math.max(best, largestRectangle(heights));\n        }\n        return best;\n    }\n\n    private int largestRectangle(int[] heights) {\n        Deque<Integer> stack = new ArrayDeque<>();\n        int best = 0;\n        for (int i = 0; i <= heights.length; i++) {\n            int height = i == heights.length ? 0 : heights[i];\n            while (!stack.isEmpty() && heights[stack.peek()] > height) {\n                int previousHeight = heights[stack.pop()];\n                int width = stack.isEmpty() ? i : i - stack.peek() - 1;\n                best = Math.max(best, previousHeight * width);\n            }\n            stack.push(i);\n        }\n        return best;\n    }\n}",
     "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
     "timeComplexity": "See algorithm",
     "spaceComplexity": "See algorithm",
@@ -1035,7 +1035,7 @@
       "Follow the stated input format",
       "Return the required result"
     ],
-    "solutionCode": "class Solution { public int farthestNodes(String[]e){Map<Integer,List<Integer>>g=new HashMap<>();for(String x:e){String[]p=x.split(\"-\");int a=Integer.parseInt(p[0]),b=Integer.parseInt(p[1]);g.computeIfAbsent(a,k->new ArrayList<>()).add(b);g.computeIfAbsent(b,k->new ArrayList<>()).add(a);}Queue<Integer>q=new ArrayDeque<>();Map<Integer,Integer>d=new HashMap<>();q.add(1);d.put(1,0);int b=0;while(!q.isEmpty()){int x=q.remove();for(int y:g.getOrDefault(x,List.of()))if(!d.containsKey(y)){d.put(y,d.get(x)+1);b=Math.max(b,d.get(y));q.add(y);}}return b;} }",
+    "solutionCode": "class Solution {\n    public int farthestNodes(String[] edges) {\n        Map<Integer, List<Integer>> graph = new HashMap<>();\n        for (String edge : edges) {\n            String[] parts = edge.split(\"-\");\n            int first = Integer.parseInt(parts[0]);\n            int second = Integer.parseInt(parts[1]);\n            graph.computeIfAbsent(first, key -> new ArrayList<>()).add(second);\n            graph.computeIfAbsent(second, key -> new ArrayList<>()).add(first);\n        }\n\n        Queue<Integer> queue = new ArrayDeque<>();\n        Map<Integer, Integer> distances = new HashMap<>();\n        queue.add(1);\n        distances.put(1, 0);\n        int farthest = 0;\n\n        while (!queue.isEmpty()) {\n            int node = queue.remove();\n            for (int neighbor : graph.getOrDefault(node, List.of())) {\n                if (!distances.containsKey(neighbor)) {\n                    distances.put(neighbor, distances.get(node) + 1);\n                    farthest = Math.max(farthest, distances.get(neighbor));\n                    queue.add(neighbor);\n                }\n            }\n        }\n        return farthest;\n    }\n}",
     "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
     "timeComplexity": "See algorithm",
     "spaceComplexity": "See algorithm",
@@ -1063,7 +1063,7 @@
       "Follow the stated input format",
       "Return the required result"
     ],
-    "solutionCode": "class Solution { public boolean hasHamiltonianPath(int[][]g){for(int st=0;st<g.length;st++){boolean[]u=new boolean[g.length];u[st]=true;if(go(g,st,1,u))return true;}return false;}private boolean go(int[][]g,int x,int n,boolean[]u){if(n==g.length)return true;for(int y=0;y<g.length;y++)if(g[x][y]==1&&!u[y]){u[y]=true;if(go(g,y,n+1,u))return true;u[y]=false;}return false;} }",
+    "solutionCode": "class Solution {\n    public boolean hasHamiltonianPath(int[][] graph) {\n        for (int start = 0; start < graph.length; start++) {\n            boolean[] used = new boolean[graph.length];\n            used[start] = true;\n            if (search(graph, start, 1, used)) return true;\n        }\n        return false;\n    }\n\n    private boolean search(int[][] graph, int node, int count, boolean[] used) {\n        if (count == graph.length) return true;\n\n        for (int next = 0; next < graph.length; next++) {\n            if (graph[node][next] == 1 && !used[next]) {\n                used[next] = true;\n                if (search(graph, next, count + 1, used)) return true;\n                used[next] = false;\n            }\n        }\n        return false;\n    }\n}",
     "explanation": "Use the named data structure or algorithm to scan, compare, or build the result while preserving the required ordering.",
     "timeComplexity": "See algorithm",
     "spaceComplexity": "See algorithm",

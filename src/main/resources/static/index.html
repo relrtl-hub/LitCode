@@ -44,6 +44,7 @@
 
         .problem-header { margin-bottom: 24px; }
         .problem-header h2 { font-size: 24px; color: #eee; margin-bottom: 8px; }
+        .problem-title { display: block; color: #64ffda; font-size: 26px; font-weight: 700; }
         .problem-meta { display: flex; gap: 12px; align-items: center; }
         .problem-meta .complexity { font-size: 12px; color: #8892b0; background: #0f3460; padding: 4px 10px; border-radius: 4px; }
         .language-badge { font-size: 10px; color: #64ffda; background: #123f45; padding: 3px 8px; border-radius: 10px; text-transform: uppercase; font-weight: 600; }
@@ -173,7 +174,13 @@
         }
 
         async function loadProblems() {
-            const res = await fetch(`${API}/api/problems`);
+            let res;
+            try {
+                res = await fetch(`${API}/api/problems`);
+            } catch (error) {
+                res = null;
+            }
+            if (!res || !res.ok) res = await fetch('data/problems.json');
             problems = await res.json();
             document.getElementById('problem-count').textContent = `${problems.length} problems`;
             renderCategoryFilter();
@@ -218,18 +225,35 @@
             setProblemListOpen(false);
             renderList(filteredProblems());
 
-            const res = await fetch(`${API}/api/problems/${id}`);
-            const p = await res.json();
+            let p = problems.find(problem => problem.id === id);
+            if (!p) return;
+            if (!p.examples || !p.solutionCode) {
+                let detail;
+                try {
+                    const detailResponse = await fetch(`${API}/api/problems/${id}`);
+                    if (detailResponse.ok) detail = await detailResponse.json();
+                } catch (error) {
+                    detail = null;
+                }
+                if (!detail) {
+                    const catalogResponse = await fetch('data/problems.json');
+                    if (catalogResponse.ok) {
+                        const catalog = await catalogResponse.json();
+                        detail = catalog.find(problem => problem.id === id);
+                    }
+                }
+                p = detail || p;
+            }
 
             const main = document.getElementById('main-content');
             main.classList.remove('empty');
 
-            const examples = p.examples.map(e => `<div class="example">${escapeHtml(e)}</div>`).join('');
-            const constraints = p.constraints.map(c => `<div class="constraint">- ${escapeHtml(c)}</div>`).join('');
+            const examples = (p.examples || []).map(e => `<div class="example">${escapeHtml(e)}</div>`).join('');
+            const constraints = (p.constraints || []).map(c => `<div class="constraint">- ${escapeHtml(c)}</div>`).join('');
 
             main.innerHTML = `
                 <div class="problem-header">
-                    <h2>${p.number == null ? '' : p.number + '. '}${escapeHtml(p.name)}</h2>
+                    <h2 class="problem-title">${p.number == null ? '' : p.number + '. '}${escapeHtml(p.name)}</h2>
                     <div class="problem-meta">
                         <span class="badge badge-${p.difficulty.toLowerCase()}">${p.difficulty}</span>
                         ${p.language ? `<span class="complexity">${escapeHtml(p.language)}</span>` : ''}
@@ -280,6 +304,7 @@
                     ${constraints}
                 </div>
             `;
+            main.scrollTop = 0;
             main.focus();
         }
 

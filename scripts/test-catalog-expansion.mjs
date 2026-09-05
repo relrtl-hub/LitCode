@@ -92,10 +92,20 @@ test('frontend exposes category filtering and category metadata', () => {
   }
 });
 
-test('new string solutions are stored as readable multiline code', () => {
-  for (const id of ['find-intersection', 'nonrepeating-character']) {
-    const problem = byId.get(id);
-    assert.ok(problem, `missing ${id}`);
-    assert.ok(problem.solutionCode.includes('\n'), `${id} should contain line breaks`);
+test('every solution is stored as readable multiline code', () => {
+  for (const problem of source) {
+    assert.ok(problem.solutionCode?.trim(), `${problem.id} should have solution code`);
+    assert.ok(problem.solutionCode.includes('\n'), `${problem.id} should contain line breaks`);
+  }
+});
+
+test('selected problem page renders an explicit problem title', () => {
+  for (const file of ['src/main/resources/static/index.html', 'docs/index.html']) {
+    const html = fs.readFileSync(file, 'utf8');
+    assert.match(html, /class="problem-title"/, `${file}: missing selected problem title element`);
+    assert.match(html, /<h2 class="problem-title">/, `${file}: selected problem title must be a heading`);
+    assert.match(html, /escapeHtml\(p\.name\)/, `${file}: selected problem title must use the chosen problem name`);
+    assert.match(html, /main\.scrollTop\s*=\s*0/, `${file}: selecting a problem must reveal its title from the top`);
+    assert.match(html, /fetch\('data\/problems\.json'\)/, `${file}: static deployment needs a catalog data fallback`);
   }
 });
