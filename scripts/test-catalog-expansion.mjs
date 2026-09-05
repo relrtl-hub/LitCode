@@ -91,3 +91,11 @@ test('frontend exposes category filtering and category metadata', () => {
     assert.match(html, /categoryCounts/);
   }
 });
+
+test('new string solutions are stored as readable multiline code', () => {
+  for (const id of ['find-intersection', 'nonrepeating-character']) {
+    const problem = byId.get(id);
+    assert.ok(problem, `missing ${id}`);
+    assert.ok(problem.solutionCode.includes('\n'), `${id} should contain line breaks`);
+  }
+});
