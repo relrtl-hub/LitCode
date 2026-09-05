@@ -98,10 +98,32 @@ test('catalog includes the requested merge-list and non-exponential Fibonacci pr
   const fibonacci = byId.get('fibonacci-non-exponential');
   assert.match(fibonacci.solutionCode, /for\s*\(|while\s*\(/, 'Fibonacci should use an iterative loop');
   assert.doesNotMatch(fibonacci.solutionCode, /fibonacci\s*\([^)]*[-+]\s*1/, 'Fibonacci should not use exponential recursive calls');
+  assert.match(fibonacci.solution2Code, /return\s+fibonacciRecursive\s*\(/, 'Fibonacci solution 2 should demonstrate recursion');
+  assert.match(fibonacci.solution2TimeComplexity, /exponential/i, 'Fibonacci solution 2 should document exponential time');
 
   const hebrew = byId.get('sort-hebrew-paragraph');
   assert.match(hebrew.solutionCode, /Collator/, 'Hebrew sorting should use locale-aware collation');
   assert.match(hebrew.solutionCode, /he-IL|Locale\("he"/, 'Hebrew sorting should use a Hebrew locale');
+  assert.match(hebrew.solution2Code, /HEBREW_ORDER|Map/, 'Hebrew solution 2 should define an explicit alphabet order');
+  assert.match(hebrew.solution2Code, /Arrays\.sort/, 'Hebrew solution 2 should sort the words');
+});
+
+test('multiple solution fields are modeled and rendered', () => {
+  for (const problem of [byId.get('fibonacci-non-exponential'), byId.get('sort-hebrew-paragraph')]) {
+    assert.ok(problem.solution2Code?.includes('\n'), `${problem.id}.solution2Code should be readable multiline code`);
+    assert.ok(problem.solution2Explanation, `${problem.id}.solution2Explanation`);
+    assert.ok(problem.solution2TimeComplexity, `${problem.id}.solution2TimeComplexity`);
+    assert.ok(problem.solution2SpaceComplexity, `${problem.id}.solution2SpaceComplexity`);
+  }
+
+  const model = fs.readFileSync('src/main/java/com/litcode/model/Problem.java', 'utf8');
+  assert.match(model, /solution2Code/);
+  assert.match(model, /getSolution2Code/);
+  for (const file of ['src/main/resources/static/index.html', 'docs/index.html']) {
+    const html = fs.readFileSync(file, 'utf8');
+    assert.match(html, /Solution 2/);
+    assert.match(html, /p\.solution2Code/);
+  }
 });
 
 test('every existing and new problem has a primary category and language', () => {

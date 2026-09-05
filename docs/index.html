@@ -287,6 +287,15 @@
                     <div class="code-block">${p.language === 'SQL' ? formatSqlQuery(p.solutionCode) : escapeHtml(p.solutionCode)}</div>
                 </div>
 
+                ${p.solution2Code ? `
+                <div class="section">
+                    <div class="section-title">Solution 2</div>
+                    <div class="complexity">Time: ${escapeHtml(p.solution2TimeComplexity || '')} | Space: ${escapeHtml(p.solution2SpaceComplexity || '')}</div>
+                    <div class="code-block">${p.language === 'SQL' ? formatSqlQuery(p.solution2Code) : escapeHtml(p.solution2Code)}</div>
+                    ${p.solution2Explanation ? `<div class="explanation-text">${formatExplanation(p.solution2Explanation)}</div>` : ''}
+                </div>
+                ` : ''}
+
                 <div class="section">
                     <div class="section-title">Explanation</div>
                     <div class="explanation-text">${formatExplanation(p.explanation)}</div>

@@ -587,7 +587,7 @@
     "name": "Fibonacci",
     "number": null,
     "difficulty": "Easy",
-    "description": "Implement a Fibonacci function that returns the nth Fibonacci number without the exponential runtime of the naive recursive solution. Use the sequence F(0) = 0, F(1) = 1, and F(n) = F(n - 1) + F(n - 2).",
+    "description": "Implement a Fibonacci function that returns the nth Fibonacci number. Compare an efficient iterative implementation with the classic recursive implementation, which is easier to read but has exponential runtime without memoization.",
     "examples": [
       "Input: n = 0\nOutput: 0",
       "Input: n = 1\nOutput: 1",
@@ -612,14 +612,18 @@
       "fibonacci",
       "dynamic programming",
       "iteration"
-    ]
+    ],
+    "solution2Code": "class Solution {\n    public long fibonacciRecursive(int n) {\n        if (n <= 1) return n;\n\n        return fibonacciRecursive(n - 1) + fibonacciRecursive(n - 2);\n    }\n}",
+    "solution2Explanation": "This follows the Fibonacci definition directly: F(n) = F(n - 1) + F(n - 2). It is useful for understanding the recurrence, but it recalculates the same values many times. For example, fibonacciRecursive(5) calculates fibonacciRecursive(3) more than once. Use the iterative Solution 1 for production code when no special requirement calls for recursion.",
+    "solution2TimeComplexity": "O(2^n), exponential",
+    "solution2SpaceComplexity": "O(n) for the recursion stack"
   },
   {
     "id": "sort-hebrew-paragraph",
     "name": "Sort Hebrew Paragraph Words",
     "number": null,
     "difficulty": "Medium",
-    "description": "Write a method that sorts the words in a paragraph according to the standard Hebrew alphabetical order. The method should use locale-aware collation rather than comparing Unicode code points directly.",
+    "description": "Write a method that sorts the words in a paragraph according to Hebrew alphabetical order. The catalog includes two approaches: Java locale-aware collation and an explicit Hebrew alphabet rank map.",
     "examples": [
       "Input: paragraph = \"שלום עולם אבא בית\"\nOutput: \"אבא בית עולם שלום\"",
       "Input: paragraph = \"כלב חתול דג ארנב\"\nOutput: \"ארנב דג חתול כלב\"",
@@ -646,7 +650,11 @@
       "locale",
       "Collator",
       "internationalization"
-    ]
+    ],
+    "solution2Code": "class Solution {\n    private static final String HEBREW_ORDER = \"אבגדהוזחטיכלמנסעפצקרשת\";\n    private static final Map<Character, Integer> LETTER_RANKS = createLetterRanks();\n\n    private static Map<Character, Integer> createLetterRanks() {\n        Map<Character, Integer> ranks = new HashMap<>();\n        for (int i = 0; i < HEBREW_ORDER.length(); i++) {\n            ranks.put(HEBREW_ORDER.charAt(i), i);\n        }\n\n        ranks.put('ך', ranks.get('כ'));\n        ranks.put('ם', ranks.get('מ'));\n        ranks.put('ן', ranks.get('נ'));\n        ranks.put('ף', ranks.get('פ'));\n        ranks.put('ץ', ranks.get('צ'));\n        return ranks;\n    }\n\n    public String sortHebrewParagraph(String paragraph) {\n        if (paragraph == null || paragraph.isBlank()) return \"\";\n\n        String[] words = paragraph.trim().split(\"\\\\s+\");\n        Arrays.sort(words, Solution::compareHebrewWords);\n        return String.join(\" \", words);\n    }\n\n    private static int compareHebrewWords(String first, String second) {\n        int length = Math.min(first.length(), second.length());\n        for (int i = 0; i < length; i++) {\n            char left = first.charAt(i);\n            char right = second.charAt(i);\n            int leftRank = LETTER_RANKS.getOrDefault(left, HEBREW_ORDER.length());\n            int rightRank = LETTER_RANKS.getOrDefault(right, HEBREW_ORDER.length());\n\n            if (leftRank != rightRank) {\n                return Integer.compare(leftRank, rightRank);\n            }\n            if (leftRank == HEBREW_ORDER.length() && left != right) {\n                return Character.compare(left, right);\n            }\n        }\n        return Integer.compare(first.length(), second.length());\n    }\n}",
+    "solution2Explanation": "Yes, Collator is not required. This approach defines the 22 Hebrew letters in order, maps each letter to a rank, and maps the five final forms to the rank of their regular forms. The comparator then compares words character by character using those ranks. Non-Hebrew characters are ordered after Hebrew letters and used as a deterministic tie-breaker. This is explicit and predictable, but it is a manually maintained rule set, so it does not automatically handle every linguistic collation rule that Java Collator knows about.",
+    "solution2TimeComplexity": "O(w log w * c), where w is the number of words and c is the average word length",
+    "solution2SpaceComplexity": "O(w + a), where a is the fixed Hebrew alphabet map size"
   },
   {
     "id": "sql-basic-sum",

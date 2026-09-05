@@ -20,6 +20,10 @@ public class Problem {
     private List<String> examples;
     private List<String> constraints;
     private String solutionCode;
+    private String solution2Code;
+    private String solution2Explanation;
+    private String solution2TimeComplexity;
+    private String solution2SpaceComplexity;
     private String explanation;
     private String timeComplexity;
     private String spaceComplexity;
@@ -60,6 +64,10 @@ public class Problem {
     public List<String> getExamples() { return examples; }
     public List<String> getConstraints() { return constraints; }
     public String getSolutionCode() { return solutionCode; }
+    public String getSolution2Code() { return solution2Code; }
+    public String getSolution2Explanation() { return solution2Explanation; }
+    public String getSolution2TimeComplexity() { return solution2TimeComplexity; }
+    public String getSolution2SpaceComplexity() { return solution2SpaceComplexity; }
     public String getExplanation() { return explanation; }
     public String getTimeComplexity() { return timeComplexity; }
     public String getSpaceComplexity() { return spaceComplexity; }
