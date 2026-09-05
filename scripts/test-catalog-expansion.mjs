@@ -42,6 +42,30 @@ const hardSqlIds = [
   'sql-parent-child-rollup',
 ];
 
+const addedJavaProblems = {
+  'merge-two-sorted-lists': {
+    name: 'Merge Two Sorted Lists',
+    number: 21,
+    difficulty: 'Easy',
+    source: 'LeetCode',
+    category: 'Linked List',
+  },
+  'fibonacci-non-exponential': {
+    name: 'Fibonacci',
+    number: null,
+    difficulty: 'Easy',
+    source: 'LitCode',
+    category: '1-D Dynamic Programming',
+  },
+  'sort-hebrew-paragraph': {
+    name: 'Sort Hebrew Paragraph Words',
+    number: null,
+    difficulty: 'Medium',
+    source: 'LitCode',
+    category: 'Arrays & Hashing',
+  },
+};
+
 test('catalog includes every remaining Java challenge exactly once', () => {
   for (const id of javaIds) {
     const problem = byId.get(id);
@@ -53,6 +77,31 @@ test('catalog includes every remaining Java challenge exactly once', () => {
     assert.match(problem.solutionCode, /class\s+Solution|public\s+(?:static\s+)?(?:boolean|int|long|String|void|List|Map)/, `${id} should contain Java code`);
   }
   assert.equal(new Set(javaIds).size, javaIds.length);
+});
+
+test('catalog includes the requested merge-list and non-exponential Fibonacci problems', () => {
+  for (const [id, fields] of Object.entries(addedJavaProblems)) {
+    const problem = byId.get(id);
+    assert.ok(problem, `missing requested Java entry: ${id}`);
+    for (const [field, value] of Object.entries(fields)) {
+      assert.equal(problem[field], value, `${id}.${field}`);
+    }
+    assert.equal(problem.language, 'Java', `${id}.language`);
+    assert.ok(problem.solutionCode.includes('\n'), `${id} should contain readable multiline code`);
+    assert.ok(problem.examples?.length > 0, `${id}.examples`);
+    assert.ok(problem.constraints?.length > 0, `${id}.constraints`);
+    assert.ok(problem.explanation, `${id}.explanation`);
+    assert.ok(problem.timeComplexity, `${id}.timeComplexity`);
+    assert.ok(problem.spaceComplexity, `${id}.spaceComplexity`);
+  }
+
+  const fibonacci = byId.get('fibonacci-non-exponential');
+  assert.match(fibonacci.solutionCode, /for\s*\(|while\s*\(/, 'Fibonacci should use an iterative loop');
+  assert.doesNotMatch(fibonacci.solutionCode, /fibonacci\s*\([^)]*[-+]\s*1/, 'Fibonacci should not use exponential recursive calls');
+
+  const hebrew = byId.get('sort-hebrew-paragraph');
+  assert.match(hebrew.solutionCode, /Collator/, 'Hebrew sorting should use locale-aware collation');
+  assert.match(hebrew.solutionCode, /he-IL|Locale\("he"/, 'Hebrew sorting should use a Hebrew locale');
 });
 
 test('every existing and new problem has a primary category and language', () => {
